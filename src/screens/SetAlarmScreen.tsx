@@ -1,55 +1,57 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
     Text,
     StyleSheet, 
     View, 
     SafeAreaView,
-    FlatList,
-    Dimensions
+    TouchableOpacity
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import DatePicker from 'react-native-date-picker';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
-const { width, height } = Dimensions.get('window');
-const colors = {
-  black: '#323F4E',
-  red: '#F76A6A',
-  text: '#ffffff',
-};
+function SetAlarmScreen({ navigation }: {navigation: any}): JSX.Element {
+    const [date, setDate] = useState(new Date());
 
-const hours = [...Array(12).keys()].map((i) => (i === 0 ? 1 : i + 1));
-const minutes = [...Array(60).keys()].map((i) => (i < 10 ? '0' : '') + i);
-
-const ITEM_SIZE = width * 0.38;
-const ITEM_SPACING = (width - ITEM_SIZE) / 2;
-
-function SetAlarmScreen(): JSX.Element {
     return (
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView>
+            <View style={styles.section}>
+                <View style={styles.headerBody}>
+                    <Ionicons name="chevron-back" size={30} color="black" onPress={() => navigation.navigate('Home')} />
+                    <Text style={styles.headerText}>Ring in less than 1 min.</Text>
+                    <Text style={styles.previewStyle}>Preview</Text>
+                </View>
 
-            <View style={styles.headerBody}>
-                <Ionicons name="chevron-back" size={30} color="black" />
-                <Text style={styles.headerText}>Ring in less than 1 min.</Text>
-                <Text style={styles.previewStyle}>Preview</Text>
+                <View style={{alignSelf: 'center', marginVertical: 10}}>
+                    <DatePicker 
+                        date={date} 
+                        onDateChange={setDate} 
+                        mode="time"
+                    />
+                </View>
+
+                <TouchableOpacity style={styles.repeat}>
+                    <Text style={styles.repeatText}>Repeat</Text>
+                    <View style={{flexDirection: 'row', alignItems: 'flex-end'}}>
+                        <Text style={{fontSize: 16}}>Never</Text>
+                        <Ionicons name="chevron-forward" size={16} color="gray" />
+                    </View>
+                </TouchableOpacity>
             </View>
 
-            <View style={{height: '30%'}}>              
-                <FlatList
-                    data={hours}
-                    keyExtractor={item => item.toString()}
-                    bounces={false}
-                    snapToInterval={ITEM_SIZE}
-                    style={{flexGrow: 0}}
-                    contentContainerStyle={{
-                        paddingVertical: ITEM_SPACING
-                    }}
-                    showsVerticalScrollIndicator={false}
-                    renderItem={({item}) => {
-                        return <View>
-                            <Text>{item}</Text>
-                        </View>
-                    }}
-                />
+            <View style={{width: '100%', height: '2%', backgroundColor: 'rgb(246,250,254)'}}/>
+
+            <View style={styles.section}>
+                <View style={{flexDirection: 'row'}}>
+                    <Text style={styles.repeatText}>Mission</Text>
+                    <Text style={{fontSize: 16, marginLeft: 5}}> 0/3</Text>
+                </View>
+                <TouchableOpacity style={styles.addMission}>
+                    <AntDesign name="plus" size={20} color="black" />
+                </TouchableOpacity>
             </View>
+
+            <View style={{width: '100%', height: '2%', backgroundColor: 'rgb(246,250,254)'}}/>
 
             <View style={styles.saveStyle}>
                 <Text style={styles.buttonText}>Save</Text>
@@ -86,9 +88,29 @@ const styles = StyleSheet.create({
     previewStyle: {
         color: 'black'
     },
-    container: {
+    repeat: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
         margin: 10
     },
+    repeatText: {
+        fontWeight: 'bold',
+        color: 'black',
+        fontSize: 16
+    },
+    section: {
+        marginVertical: 10,
+        marginHorizontal: 20
+    },
+    addMission: {
+        backgroundColor: 'rgb(242,246,255)',
+        height: 80,
+        width: 110,
+        borderRadius: 5,
+        marginVertical: 15,
+        justifyContent: 'center',
+        alignItems: 'center'
+    }
 });
 
 export default SetAlarmScreen;
