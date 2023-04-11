@@ -1,9 +1,9 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import AlarmDetail from '../components/AlarmDetail';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-function HomeScreen(): JSX.Element {
+function HomeScreen({navigation}: {navigation: any}): JSX.Element {
     return (
         <View style={styles.container}>
             <View>
@@ -12,7 +12,9 @@ function HomeScreen(): JSX.Element {
                 <AlarmDetail />
             </View>
             <View style={styles.buttonContainer}>
-                <Ionicons name="add-circle-sharp" size={70} color="rgb(244,16,59)"/>
+                <TouchableOpacity onPress={() => navigation.navigate('Alarm')}>
+                    <Ionicons name="add-circle-sharp" size={70} color="rgb(244,16,59)"/>
+                </TouchableOpacity>
             </View>
         </View>
     );
