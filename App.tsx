@@ -1,5 +1,6 @@
 import HomeScreen from './src/screens/HomeScreen';
 import SetAlarmScreen from './src/screens/SetAlarmScreen';
+import MissionScreen from './src/screens/MissionScreen';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 
@@ -16,6 +17,7 @@ const StackNavigator = () => {
     >
     <Stack.Screen name="Home" component={HomeScreen} />
     <Stack.Screen name="Alarm" component={SetAlarmScreen} />
+    <Stack.Screen name="Mission" component={MissionScreen} />
     </Stack.Navigator>
   )
 }

@@ -50,7 +50,11 @@ function SetAlarmScreen({ navigation }: { navigation: any }): JSX.Element {
                     <Text style={styles.repeatText}>Mission</Text>
                     <Text style={{ fontSize: 16, marginLeft: 5 }}> 0/3</Text>
                 </View>
-                <TouchableOpacity style={styles.addMission}>
+
+                <TouchableOpacity 
+                    style={styles.addMission}
+                    onPress={() => navigation.navigate('Mission')}
+                >
                     <AntDesign name="plus" size={20} color="black" />
                 </TouchableOpacity>
             </View>
