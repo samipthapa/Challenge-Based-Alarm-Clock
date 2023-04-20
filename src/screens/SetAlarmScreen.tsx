@@ -5,20 +5,25 @@ import {
     View,
     SafeAreaView,
     TouchableOpacity,
+    Modal
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import DatePicker from 'react-native-date-picker';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {Slider} from '@miblanchard/react-native-slider';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import ModalComponent from '../components/ModalComponent';
 
 function SetAlarmScreen({ navigation }: { navigation: any }): JSX.Element {
     const [date, setDate] = useState(new Date());
     const [volume, setVolume] = useState(1.0);
     const [vibrate, setVibrate] = useState(true);
+    const [modalVisible, setModalVisible] = useState(true);
 
     return (
         <SafeAreaView>
+            <ModalComponent visibility={modalVisible}/>
+
             <View style={styles.section}>
                 <View style={styles.headerBody}>
                     <Ionicons name="chevron-back" size={30} color="black" onPress={() => navigation.navigate('Home')} />
@@ -34,7 +39,10 @@ function SetAlarmScreen({ navigation }: { navigation: any }): JSX.Element {
                     />
                 </View>
 
-                <TouchableOpacity style={styles.repeat}>
+                <TouchableOpacity 
+                    style={styles.repeat}
+                    onPress={() => setModalVisible(prev => !prev)}
+                >
                     <Text style={styles.repeatText}>Repeat</Text>
                     <View style={{ flexDirection: 'row', alignItems: 'flex-end' }}>
                         <Text style={{ fontSize: 16 }}>Never</Text>
@@ -188,7 +196,7 @@ const styles = StyleSheet.create({
     },
     trackStyle: {
         height: 3,
-    }
+    },
 });
 
 export default SetAlarmScreen;
