@@ -13,16 +13,20 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import {Slider} from '@miblanchard/react-native-slider';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import ModalComponent from '../components/ModalComponent';
+import { CheckBox } from '@rneui/themed';
 
 function SetAlarmScreen({ navigation }: { navigation: any }): JSX.Element {
     const [date, setDate] = useState(new Date());
     const [volume, setVolume] = useState(1.0);
     const [vibrate, setVibrate] = useState(true);
-    const [modalVisible, setModalVisible] = useState(true);
+    const [modalVisible, setModalVisible] = useState(false);
 
     return (
         <SafeAreaView>
-            <ModalComponent visibility={modalVisible}/>
+            <ModalComponent 
+                visibility={modalVisible} 
+                onChangeVisibility={() => setModalVisible(prev => !prev)}
+            />
 
             <View style={styles.section}>
                 <View style={styles.headerBody}>
@@ -90,7 +94,22 @@ function SetAlarmScreen({ navigation }: { navigation: any }): JSX.Element {
 
                     <Text style={{marginBottom: 15, fontSize: 30, color: 'rgb(56,194,224)'}}> | </Text>
 
-                    <MaterialCommunityIcon name="vibrate" size={27} color="rgb(67,70,76)" style={styles.speakerIcon} />
+                    <MaterialCommunityIcon 
+                        name="vibrate" 
+                        size={27} 
+                        color="rgb(67,70,76)" 
+                        style={{ marginBottom: 10}} 
+                    />
+
+                    <CheckBox
+                        checked={vibrate}
+                        iconType="material-community"
+                        checkedIcon="checkbox-marked"
+                        uncheckedIcon="checkbox-blank-outline"
+                        checkedColor="rgb(35,167,199)"
+                        onPress={() => setVibrate(prev => !prev)}
+                        wrapperStyle={{ marginBottom: 10 }}
+                    />
                 </View>
 
                 <View style={styles.configuration}>
@@ -183,7 +202,7 @@ const styles = StyleSheet.create({
     configuration: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginVertical: 14
+        marginVertical: 12
     },
     speakerIcon: {
         marginBottom: 10,

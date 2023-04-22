@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { CheckBox } from '@rneui/themed';
 
-function ModalComponent({ visibility }): JSX.Element {
+function ModalComponent({ visibility, onChangeVisibility }): JSX.Element {
     const [days, setDays] = useState([
         { day: 'Sunday', active: true },
         { day: 'Monday', active: false },
@@ -91,9 +91,12 @@ function ModalComponent({ visibility }): JSX.Element {
                             keyExtractor={(item) => item.day}
                         />
 
-                        <View style={styles.doneStyle}>
+                        <TouchableOpacity 
+                            style={styles.doneStyle}
+                            onPress={onChangeVisibility}
+                        >
                             <Text style={styles.doneText}>Done</Text>
-                        </View>
+                        </TouchableOpacity>
                     </View>
                 </View>
 
