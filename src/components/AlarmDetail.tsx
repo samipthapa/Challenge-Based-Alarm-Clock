@@ -3,8 +3,9 @@ import { View, Text, StyleSheet, Switch } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 
-function AlarmDetail(): JSX.Element {
-    const [isEnabled, setIsEnabled] = useState(false);
+function AlarmDetail({ time, ampm, isActive }): JSX.Element {
+    // console.log(typeof(isActive));
+    const [isEnabled, setIsEnabled] = useState(isActive);
 
     return (
         <View style={styles.container}>
@@ -12,8 +13,8 @@ function AlarmDetail(): JSX.Element {
 
             <View style={styles.toggle}>
                 <View style={styles.timeContainer}>
-                    <Text style={styles.timeStyle}>5:32</Text>
-                    <Text style={styles.period}>AM</Text>
+                    <Text style={styles.timeStyle}>{time}</Text>
+                    <Text style={styles.period}>{ampm}</Text>
                 </View>
 
                 <Switch

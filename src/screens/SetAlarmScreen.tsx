@@ -1,19 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     Text,
     StyleSheet,
     View,
     SafeAreaView,
     TouchableOpacity,
-    Modal
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import DatePicker from 'react-native-date-picker';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import {Slider} from '@miblanchard/react-native-slider';
+import { Slider } from '@miblanchard/react-native-slider';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import ModalComponent from '../components/ModalComponent';
 import { CheckBox } from '@rneui/themed';
+import { openDatabase } from 'react-native-sqlite-storage';
+
+let db = openDatabase({ name: 'AlarmDatabase.db' });
 
 function SetAlarmScreen({ navigation }: { navigation: any }): JSX.Element {
     const [date, setDate] = useState(new Date());
@@ -21,10 +23,34 @@ function SetAlarmScreen({ navigation }: { navigation: any }): JSX.Element {
     const [vibrate, setVibrate] = useState(true);
     const [modalVisible, setModalVisible] = useState(false);
 
+    const saveData = (): void => {
+        const timeString = date.toLocaleTimeString();
+        const timeArray = timeString.split(' ');
+        const timeComponents = timeArray[0].split(":");
+        const time = timeComponents[0] + ':' + timeComponents[1];
+        const ampm = timeArray[1];
+
+        db.transaction(txn => {
+            txn.executeSql(
+                'INSERT INTO table_alarm(isEnabled, time, ampm) VALUES (?, ?, ?)',
+                [true, time, ampm],
+                (tx, res) => {
+                    if (res.rowsAffected == 1) {
+                        navigation.goBack();
+                    }
+                    console.log(res)
+                },
+                error => {
+                    console.log(error);
+                }
+              );
+        })
+    };
+
     return (
         <SafeAreaView>
-            <ModalComponent 
-                visibility={modalVisible} 
+            <ModalComponent
+                visibility={modalVisible}
                 onChangeVisibility={() => setModalVisible(prev => !prev)}
             />
 
@@ -43,7 +69,7 @@ function SetAlarmScreen({ navigation }: { navigation: any }): JSX.Element {
                     />
                 </View>
 
-                <TouchableOpacity 
+                <TouchableOpacity
                     style={styles.repeat}
                     onPress={() => setModalVisible(prev => !prev)}
                 >
@@ -63,7 +89,7 @@ function SetAlarmScreen({ navigation }: { navigation: any }): JSX.Element {
                     <Text style={{ fontSize: 16, marginLeft: 5 }}> 0/3</Text>
                 </View>
 
-                <TouchableOpacity 
+                <TouchableOpacity
                     style={styles.addMission}
                     onPress={() => navigation.navigate('Mission')}
                 >
@@ -75,11 +101,11 @@ function SetAlarmScreen({ navigation }: { navigation: any }): JSX.Element {
 
             <View style={styles.section}>
 
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     {volume === 0 && <Ionicons name="volume-mute" size={27} color="rgb(137,141,152)" style={styles.speakerIcon} />}
                     {volume !== 0 && <Ionicons name="volume-medium" size={27} color="rgb(67,70,76)" style={styles.speakerIcon} />}
 
-                    <View style={{width: '50%', marginRight: 10, marginBottom: 10,}}>
+                    <View style={{ width: '50%', marginRight: 10, marginBottom: 10, }}>
                         <Slider
                             value={volume}
                             onValueChange={newValue => setVolume(newValue[0])}
@@ -90,15 +116,15 @@ function SetAlarmScreen({ navigation }: { navigation: any }): JSX.Element {
                         />
                     </View>
 
-                    <Ionicons name="play" size={24} color="rgb(137,141,152)" style={[styles.speakerIcon, {marginRight: 0}]} />
+                    <Ionicons name="play" size={24} color="rgb(137,141,152)" style={[styles.speakerIcon, { marginRight: 0 }]} />
 
-                    <Text style={{marginBottom: 15, fontSize: 30, color: 'rgb(56,194,224)'}}> | </Text>
+                    <Text style={{ marginBottom: 15, fontSize: 30, color: 'rgb(56,194,224)' }}> | </Text>
 
-                    <MaterialCommunityIcon 
-                        name="vibrate" 
-                        size={27} 
-                        color="rgb(67,70,76)" 
-                        style={{ marginBottom: 10}} 
+                    <MaterialCommunityIcon
+                        name="vibrate"
+                        size={27}
+                        color="rgb(67,70,76)"
+                        style={{ marginBottom: 10 }}
                     />
 
                     <CheckBox
@@ -139,11 +165,12 @@ function SetAlarmScreen({ navigation }: { navigation: any }): JSX.Element {
 
             </View>
 
-            <View style={styles.saveStyle}>
+            <TouchableOpacity 
+                style={styles.saveStyle}
+                onPress={() => saveData()}
+            >
                 <Text style={styles.buttonText}>Save</Text>
-            </View>
-
-
+            </TouchableOpacity>
 
         </SafeAreaView>
     );

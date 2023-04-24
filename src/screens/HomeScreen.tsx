@@ -1,15 +1,52 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
 import AlarmDetail from '../components/AlarmDetail';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import useSQLite from '../hooks/useSQLite';
+
+import { openDatabase } from 'react-native-sqlite-storage';
+
+let db = openDatabase({ name: 'AlarmDatabase.db' });
 
 function HomeScreen({navigation}: {navigation: any}): JSX.Element {
+    const [alarmList, setAlarmList] = useState([]);
+
+    useSQLite();
+
+    useEffect(() => {
+        db.transaction(txn => {
+            txn.executeSql("SELECT * FROM table_alarm", [], 
+                (tx, res) => {
+                    let temp = [];
+                    for (let i = 0; i < res.rows.length; ++i) {
+                        console.log(res.rows.item(i));
+                        temp.push(res.rows.item(i));
+                    }
+                    setAlarmList(temp);
+                })
+        })
+    }, []);
+
     return (
         <View style={styles.container}>
             <View>
                 <Text style={styles.nextAlarm}>Next alarm</Text>
                 <Text style={styles.countdown}>Alarm will ring in 11 hr. 43 min.</Text>
-                <AlarmDetail />
+                {/* <AlarmDetail /> */}
+                <FlatList
+                    data={alarmList}
+                    renderItem={({item, index}) => {
+                        return (
+                            <AlarmDetail 
+                                time={item.time}
+                                ampm={item.ampm}
+                                isActive={item.isEnabled}
+                            />
+                        )
+                    }}
+                    keyExtractor={item => item.alarmID}
+                />  
+
             </View>
             <View style={styles.buttonContainer}>
                 <TouchableOpacity onPress={() => navigation.navigate('Alarm')}>
