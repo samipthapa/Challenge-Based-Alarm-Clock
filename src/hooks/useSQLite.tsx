@@ -16,7 +16,7 @@ const useSQLite = () => {
               if (res.rows.length == 0) {
                 txn.executeSql('DROP TABLE IF EXISTS table_alarm', []);
                 txn.executeSql(
-                  'CREATE TABLE IF NOT EXISTS table_alarm(alarmID INTEGER PRIMARY KEY AUTOINCREMENT, isEnabled BOOLEAN, time VARCHAR(30), ampm VARCHAR(2))',
+                  'CREATE TABLE IF NOT EXISTS table_alarm(alarmID INTEGER PRIMARY KEY AUTOINCREMENT, isEnabled BOOLEAN, date VARCHAR(30))',
                   []
                 );
               } else {

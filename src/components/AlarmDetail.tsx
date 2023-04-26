@@ -2,10 +2,35 @@ import React, {useState}  from 'react';
 import { View, Text, StyleSheet, Switch } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
+import Feather from 'react-native-vector-icons/Feather';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { openDatabase } from 'react-native-sqlite-storage';
 
-function AlarmDetail({ time, ampm, isActive }): JSX.Element {
-    // console.log(typeof(isActive));
-    const [isEnabled, setIsEnabled] = useState(isActive);
+let db = openDatabase({ name: 'AlarmDatabase.db' });
+
+function AlarmDetail({ date, isActive, alarmID, setAlarmList }): JSX.Element {
+    const [isEnabled, setIsEnabled] = useState(isActive === 1 ? true : false);
+
+    const dateObj = new Date(date);
+    const timeString = dateObj.toLocaleTimeString();
+    const timeArray = timeString.split(' ');
+    const timeComponents = timeArray[0].split(":");
+    const time = timeComponents[0] + ':' + timeComponents[1];
+    const ampm = timeArray[1];
+
+    const deleteAlarm = () => {
+        db.transaction(txn => {
+            txn.executeSql("DELETE FROM table_alarm where alarmID=?", [alarmID]);
+            txn.executeSql("SELECT * FROM table_alarm", [], 
+                (tx, res) => {
+                    let temp = [];
+                    for (let i = 0; i < res.rows.length; ++i) {
+                        temp.push(res.rows.item(i));
+                    }
+                    setAlarmList(temp);
+                })
+        })
+    }
 
     return (
         <View style={styles.container}>
@@ -33,7 +58,12 @@ function AlarmDetail({ time, ampm, isActive }): JSX.Element {
                     <MaterialCommunityIcons name="calculator-variant" size={20} color="black" />
                 </View>
 
-                <SimpleLineIcons name="options-vertical" size={13} color="black" />
+                {/* <SimpleLineIcons name="options-vertical" size={13} color="black" /> */}
+                <TouchableOpacity
+                    onPress={() => deleteAlarm()}
+                >
+                    <Feather name="trash-2" size={23} color="black" />
+                </TouchableOpacity>
             </View>
         </View>
     );

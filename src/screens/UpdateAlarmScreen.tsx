@@ -14,22 +14,33 @@ import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIc
 import ModalComponent from '../components/ModalComponent';
 import { CheckBox } from '@rneui/themed';
 import { openDatabase } from 'react-native-sqlite-storage';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 let db = openDatabase({ name: 'AlarmDatabase.db' });
 
-function SetAlarmScreen({ navigation }: { navigation: any }): JSX.Element {
+function UpdateAlarmScreen({ navigation }: { navigation: any }): JSX.Element {
+    const route = useRoute();
     const [date, setDate] = useState(new Date());
     const [volume, setVolume] = useState(1.0);
     const [vibrate, setVibrate] = useState(true);
     const [modalVisible, setModalVisible] = useState(false);
 
+    useEffect(() => {
+        const date = new Date(route.params.data.date);
+        setDate(date);
+    }, []);
+
     const saveData = (): void => {
-        const dateStr = date.toISOString();
+        const timeString = date.toLocaleTimeString();
+        const timeArray = timeString.split(' ');
+        const timeComponents = timeArray[0].split(":");
+        const time = timeComponents[0] + ':' + timeComponents[1];
+        const ampm = timeArray[1];
 
         db.transaction(txn => {
             txn.executeSql(
-                'INSERT INTO table_alarm(isEnabled, date) VALUES (?, ?)',
-                [true, dateStr],
+                'INSERT INTO table_alarm(isEnabled, time, ampm) VALUES (?, ?, ?)',
+                [true, time, ampm],
                 (tx, res) => {
                     if (res.rowsAffected == 1) {
                         navigation.goBack();
@@ -241,4 +252,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default SetAlarmScreen;
+export default UpdateAlarmScreen;

@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native
 import AlarmDetail from '../components/AlarmDetail';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import useSQLite from '../hooks/useSQLite';
+import { useIsFocused } from '@react-navigation/native';
 
 import { openDatabase } from 'react-native-sqlite-storage';
 
@@ -10,6 +11,7 @@ let db = openDatabase({ name: 'AlarmDatabase.db' });
 
 function HomeScreen({navigation}: {navigation: any}): JSX.Element {
     const [alarmList, setAlarmList] = useState([]);
+    const isFocused = useIsFocused();
 
     useSQLite();
 
@@ -19,29 +21,39 @@ function HomeScreen({navigation}: {navigation: any}): JSX.Element {
                 (tx, res) => {
                     let temp = [];
                     for (let i = 0; i < res.rows.length; ++i) {
-                        console.log(res.rows.item(i));
                         temp.push(res.rows.item(i));
                     }
                     setAlarmList(temp);
                 })
         })
-    }, []);
+    }, [isFocused]);
+
 
     return (
         <View style={styles.container}>
             <View>
                 <Text style={styles.nextAlarm}>Next alarm</Text>
                 <Text style={styles.countdown}>Alarm will ring in 11 hr. 43 min.</Text>
-                {/* <AlarmDetail /> */}
                 <FlatList
                     data={alarmList}
                     renderItem={({item, index}) => {
                         return (
-                            <AlarmDetail 
-                                time={item.time}
-                                ampm={item.ampm}
-                                isActive={item.isEnabled}
-                            />
+                            <TouchableOpacity
+                                onPress={() => navigation.navigate('Update', {
+                                    data: {
+                                        date: item.date,
+                                        isActive: item.isEnabled,
+                                        alarmID: item.alarmID,
+                                    }
+                                })}
+                            >
+                                <AlarmDetail 
+                                    date={item.date}
+                                    isActive={item.isEnabled}
+                                    alarmID={item.alarmID}
+                                    setAlarmList={setAlarmList}
+                                />
+                            </TouchableOpacity>
                         )
                     }}
                     keyExtractor={item => item.alarmID}
