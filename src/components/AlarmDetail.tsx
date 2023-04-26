@@ -32,6 +32,19 @@ function AlarmDetail({ date, isActive, alarmID, setAlarmList }): JSX.Element {
         })
     }
 
+    const toggleAlarm = () => {
+
+        db.transaction(txn => {
+            txn.executeSql("UPDATE table_alarm set isEnabled=? where alarmID=?", 
+            [!isEnabled, alarmID], 
+            (tx, res) => {
+                console.log('Updated Database')
+            })
+        })
+        
+        setIsEnabled(previousState => !previousState);
+    }
+
     return (
         <View style={styles.container}>
             <Text style={styles.repeatText}>Every day</Text>
@@ -46,7 +59,7 @@ function AlarmDetail({ date, isActive, alarmID, setAlarmList }): JSX.Element {
                     trackColor={{false: 'rgb(237,240,245)', true: 'rgb(178,234,247)'}}
                     thumbColor={isEnabled ? 'rgb(1,184,224)' : 'rgb(185,185,185)'}
                     onValueChange={() => {
-                        setIsEnabled(previousState => !previousState);
+                        toggleAlarm()
                     }}
                     value={isEnabled}
                 />
