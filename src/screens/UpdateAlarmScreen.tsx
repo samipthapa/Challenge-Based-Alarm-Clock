@@ -30,27 +30,15 @@ function UpdateAlarmScreen({ navigation }: { navigation: any }): JSX.Element {
         setDate(date);
     }, []);
 
-    const saveData = (): void => {
-        const timeString = date.toLocaleTimeString();
-        const timeArray = timeString.split(' ');
-        const timeComponents = timeArray[0].split(":");
-        const time = timeComponents[0] + ':' + timeComponents[1];
-        const ampm = timeArray[1];
+    const updateData = (): void => {
+        const dateStr = date.toISOString();
 
         db.transaction(txn => {
-            txn.executeSql(
-                'INSERT INTO table_alarm(isEnabled, time, ampm) VALUES (?, ?, ?)',
-                [true, time, ampm],
-                (tx, res) => {
-                    if (res.rowsAffected == 1) {
-                        navigation.goBack();
-                    }
-                    console.log(res)
-                },
-                error => {
-                    console.log(error);
-                }
-              );
+            txn.executeSql("UPDATE table_alarm set date=? where alarmID=?", 
+            [dateStr, route.params.data.alarmID], 
+            (tx, res) => {
+                navigation.goBack();
+            })
         })
     };
 
@@ -174,7 +162,7 @@ function UpdateAlarmScreen({ navigation }: { navigation: any }): JSX.Element {
 
             <TouchableOpacity 
                 style={styles.saveStyle}
-                onPress={() => saveData()}
+                onPress={() => updateData()}
             >
                 <Text style={styles.buttonText}>Save</Text>
             </TouchableOpacity>
