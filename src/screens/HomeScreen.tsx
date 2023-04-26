@@ -23,10 +23,13 @@ function HomeScreen({navigation}: {navigation: any}): JSX.Element {
                     for (let i = 0; i < res.rows.length; ++i) {
                         temp.push(res.rows.item(i));
                     }
+                    temp.sort((a, b) => new Date(a.date) - new Date(b.date));
                     setAlarmList(temp);
                 })
         })
     }, [isFocused]);
+
+    console.log(alarmList);
 
 
     return (
