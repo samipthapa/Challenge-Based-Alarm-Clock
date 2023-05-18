@@ -1,5 +1,5 @@
 import React, {useState}  from 'react';
-import { View, Text, StyleSheet, Switch } from 'react-native';
+import { View, Text, StyleSheet, Switch, TouchableWithoutFeedback } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import Feather from 'react-native-vector-icons/Feather';
@@ -72,11 +72,11 @@ function AlarmDetail({ date, isActive, alarmID, setAlarmList }): JSX.Element {
                 </View>
 
                 {/* <SimpleLineIcons name="options-vertical" size={13} color="black" /> */}
-                <TouchableOpacity
-                    onPress={() => deleteAlarm()}
+                <TouchableWithoutFeedback
+                    onPress={deleteAlarm}
                 >
                     <Feather name="trash-2" size={23} color="black" />
-                </TouchableOpacity>
+                </TouchableWithoutFeedback>
             </View>
         </View>
     );

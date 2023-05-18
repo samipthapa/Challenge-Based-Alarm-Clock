@@ -26,11 +26,23 @@ function HomeScreen({navigation}: {navigation: any}): JSX.Element {
                     temp.sort((a, b) => new Date(a.date) - new Date(b.date));
                     setAlarmList(temp);
                 })
-        })
+        });
+
+        const interval = setInterval(checkAlarms, 1000)
     }, [isFocused]);
 
-    console.log(alarmList);
+    const checkAlarms = () => {
+        const currentTime = new Date().toLocaleTimeString();
 
+        alarmList.forEach(alarm => {
+            const alarmTime = new Date(alarm.date).toLocaleTimeString();
+            console.log(`${alarmTime} ${currentTime}`);
+            if (alarmTime === currentTime) {
+                navigation.navigate('Preview');
+                console.log('Alarm triggered');
+            }
+        })
+    }
 
     return (
         <View style={styles.container}>
