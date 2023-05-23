@@ -1,16 +1,51 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-function PreviewScreen(): JSX.Element {
+function PreviewScreen({ navigation }): JSX.Element {
+
+    const currentDate = new Date().toLocaleDateString('en-US', {
+        day: 'numeric',
+        month: 'short',
+        weekday: 'short',
+    });
+
+    const [currentTime, setCurrentTime] = useState(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCurrentTime(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+        }, 60000);
+
+        return () => clearInterval(interval);
+    }, []);
+
+    var Sound = require('react-native-sound');
+    Sound.setCategory('Playback');
+
+    var retro = new Sound('retro.mp3', Sound.MAIN_BUNDLE, (error) => {
+        if (error) {
+            console.log('failed to load the sound', error);
+        }
+        retro.play((success) => {
+            if (success) {
+                console.log('successfully finished playing');
+            } else {
+                console.log('Error');
+            }
+        });
+    });
+
+    retro.setNumberOfLoops(-1);
+
     return (
         <View style={styles.container}>
-            <View style={{flexDirection: 'column'}}>
+            <View style={{ flexDirection: 'column' }}>
                 <View style={styles.circle1} />
                 <View style={styles.circle2} />
-                <Text style={styles.dateStyle}>May 18 Thu</Text>
+                <Text style={styles.dateStyle}>{currentDate}</Text>
             </View>
 
-            <Text style={styles.timeStyle}>4:46</Text>
+            <Text style={styles.timeStyle}>{currentTime}</Text>
             <View style={styles.circle3} />
 
             <TouchableOpacity
@@ -19,8 +54,14 @@ function PreviewScreen(): JSX.Element {
                 <Text style={styles.snoozeText}>Snooze</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity 
+            <TouchableOpacity
                 style={styles.dismissButton}
+                onPress={
+                    () => {
+                        navigation.goBack()
+                        retro.stop()
+                    }
+                }
             >
                 <Text style={styles.dismissText}>Dismiss</Text>
             </TouchableOpacity>
@@ -56,7 +97,7 @@ const styles = StyleSheet.create({
     timeStyle: {
         color: 'white',
         textAlign: 'center',
-        fontSize: 90,
+        fontSize: 65,
         fontWeight: '700',
     },
     snoozeButton: {
@@ -96,6 +137,6 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-end',
         marginRight: '20%',
     },
- });
+});
 
 export default PreviewScreen;

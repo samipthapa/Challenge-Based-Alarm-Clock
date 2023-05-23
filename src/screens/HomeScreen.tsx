@@ -9,7 +9,7 @@ import { openDatabase } from 'react-native-sqlite-storage';
 
 let db = openDatabase({ name: 'AlarmDatabase.db' });
 
-function HomeScreen({navigation}: {navigation: any}): JSX.Element {
+function HomeScreen({ navigation }: { navigation: any }): JSX.Element {
     const [alarmList, setAlarmList] = useState([]);
     const isFocused = useIsFocused();
 
@@ -17,7 +17,7 @@ function HomeScreen({navigation}: {navigation: any}): JSX.Element {
 
     useEffect(() => {
         db.transaction(txn => {
-            txn.executeSql("SELECT * FROM table_alarm", [], 
+            txn.executeSql("SELECT * FROM table_alarm", [],
                 (tx, res) => {
                     let temp = [];
                     for (let i = 0; i < res.rows.length; ++i) {
@@ -26,7 +26,7 @@ function HomeScreen({navigation}: {navigation: any}): JSX.Element {
                     temp.sort((a, b) => new Date(a.date) - new Date(b.date));
                     setAlarmList(temp);
                 })
-            
+
         });
     }, [isFocused]);
 
@@ -36,8 +36,6 @@ function HomeScreen({navigation}: {navigation: any}): JSX.Element {
 
             alarmList.forEach(alarm => {
                 const alarmTimeObject = new Date(alarm.date).toLocaleTimeString();
-
-                console.log(`${alarmTimeObject} ${currentTime}`);
 
                 if (alarmTimeObject === currentTime) {
                     navigation.navigate('Preview');
@@ -56,9 +54,10 @@ function HomeScreen({navigation}: {navigation: any}): JSX.Element {
                 <Text style={styles.countdown}>Alarm will ring in 11 hr. 43 min.</Text>
                 <FlatList
                     data={alarmList}
-                    renderItem={({item, index}) => {
+                    renderItem={({ item, index }) => {
                         return (
                             <TouchableOpacity
+                                activeOpacity={0.6}
                                 onPress={() => navigation.navigate('Update', {
                                     data: {
                                         date: item.date,
@@ -67,7 +66,7 @@ function HomeScreen({navigation}: {navigation: any}): JSX.Element {
                                     }
                                 })}
                             >
-                                <AlarmDetail 
+                                <AlarmDetail
                                     date={item.date}
                                     isActive={item.isEnabled}
                                     alarmID={item.alarmID}
@@ -77,12 +76,12 @@ function HomeScreen({navigation}: {navigation: any}): JSX.Element {
                         )
                     }}
                     keyExtractor={item => item.alarmID}
-                />  
+                />
 
             </View>
             <View style={styles.buttonContainer}>
                 <TouchableOpacity onPress={() => navigation.navigate('Alarm')}>
-                    <Ionicons name="add-circle-sharp" size={70} color="rgb(244,16,59)"/>
+                    <Ionicons name="add-circle-sharp" size={70} color="rgb(244,16,59)" />
                 </TouchableOpacity>
             </View>
         </View>
@@ -108,7 +107,7 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     nextAlarm: {
-        fontWeight: 'bold', 
+        fontWeight: 'bold',
         color: 'rgb(103,109,124)',
         fontSize: 16,
         marginVertical: 3,
