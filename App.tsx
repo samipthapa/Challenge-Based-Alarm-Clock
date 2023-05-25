@@ -17,11 +17,11 @@ const StackNavigator = () => {
         cardStyle: { backgroundColor: '#FFFFFF' },
       }}
     >
-    <Stack.Screen name="Home" component={HomeScreen} />
-    <Stack.Screen name="Alarm" component={SetAlarmScreen} />
-    <Stack.Screen name="Mission" component={MissionScreen} />
-    <Stack.Screen name="Update" component={UpdateAlarmScreen} />
-    <Stack.Screen name="Preview" component={PreviewScreen} />
+      <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen name="Alarm" component={SetAlarmScreen} />
+      <Stack.Screen name="Mission" component={MissionScreen} />
+      <Stack.Screen name="Update" component={UpdateAlarmScreen} />
+      <Stack.Screen name="Preview" component={PreviewScreen} />
     </Stack.Navigator>
   )
 }
