@@ -19,7 +19,7 @@ function MissionScreen({ navigation }: { navigation: any }): JSX.Element {
             <View style={styles.missionView}>
                 <Text style={styles.missionText}>Wake Your Brain</Text>
                 <MissionType
-                    title="Math"
+                    title="Memory"
                     iconName="brain"
                     IconProvider={MaterialCommunityIcons}
                     navigation={navigation}

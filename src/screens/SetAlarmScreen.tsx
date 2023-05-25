@@ -35,8 +35,8 @@ function SetAlarmScreen({ navigation }: { navigation: any }): JSX.Element {
 
         db.transaction(txn => {
             txn.executeSql(
-                'INSERT INTO table_alarm(isEnabled, date) VALUES (?, ?)',
-                [true, dateStr],
+                'INSERT INTO table_alarm(isEnabled, date, mission) VALUES (?, ?, ?)',
+                [true, dateStr, title],
                 (tx, res) => {
                     if (res.rowsAffected == 1) {
                         navigation.goBack();
