@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import Sound from 'react-native-sound';
 
 function PreviewScreen({ navigation }): JSX.Element {
 
@@ -22,11 +23,13 @@ function PreviewScreen({ navigation }): JSX.Element {
     var Sound = require('react-native-sound');
     Sound.setCategory('Playback');
 
-    var retro = new Sound('retro.mp3', Sound.MAIN_BUNDLE, (error) => {
+    var alarmTone = new Sound('casino.mp3', Sound.MAIN_BUNDLE, (error) => {
         if (error) {
             console.log('failed to load the sound', error);
+            return;
         }
-        retro.play((success) => {
+
+        alarmTone.play(success => {
             if (success) {
                 console.log('successfully finished playing');
             } else {
@@ -34,8 +37,6 @@ function PreviewScreen({ navigation }): JSX.Element {
             }
         });
     });
-
-    retro.setNumberOfLoops(-1);
 
     return (
         <View style={styles.container}>
@@ -58,8 +59,8 @@ function PreviewScreen({ navigation }): JSX.Element {
                 style={styles.dismissButton}
                 onPress={
                     () => {
-                        navigation.goBack()
-                        retro.stop()
+                        navigation.goBack();
+                        alarmTone.stop();
                     }
                 }
             >
