@@ -14,6 +14,7 @@ import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIc
 import ModalComponent from '../components/ModalComponent';
 import { CheckBox } from '@rneui/themed';
 import { openDatabase } from 'react-native-sqlite-storage';
+import { useRoute } from '@react-navigation/native';
 
 let db = openDatabase({ name: 'AlarmDatabase.db' });
 
@@ -22,6 +23,12 @@ function SetAlarmScreen({ navigation }: { navigation: any }): JSX.Element {
     const [volume, setVolume] = useState(1.0);
     const [vibrate, setVibrate] = useState(true);
     const [modalVisible, setModalVisible] = useState(false);
+
+    const route = useRoute();
+    const title = route.params?.title;
+    const iconName = route.params?.iconName;
+    const IconProvider = route.params?.IconProvider;
+
 
     const saveData = (): void => {
         const dateStr = date.toISOString();
@@ -39,7 +46,7 @@ function SetAlarmScreen({ navigation }: { navigation: any }): JSX.Element {
                 error => {
                     console.log(error);
                 }
-              );
+            );
         })
     };
 
@@ -89,7 +96,15 @@ function SetAlarmScreen({ navigation }: { navigation: any }): JSX.Element {
                     style={styles.addMission}
                     onPress={() => navigation.navigate('Mission')}
                 >
-                    <AntDesign name="plus" size={20} color="black" />
+                    {title && <View>
+                        <IconProvider name={iconName} style={styles.iconStyle} />
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={styles.missionStyle}>{title}</Text>
+                            <Ionicons name="chevron-forward" size={20} color="black" />
+                        </View>
+                    </View>}
+
+                    {!title && <AntDesign name="plus" size={20} color="black" />}
                 </TouchableOpacity>
             </View>
 
@@ -161,7 +176,7 @@ function SetAlarmScreen({ navigation }: { navigation: any }): JSX.Element {
 
             </View>
 
-            <TouchableOpacity 
+            <TouchableOpacity
                 style={styles.saveStyle}
                 onPress={() => saveData()}
             >
@@ -238,6 +253,15 @@ const styles = StyleSheet.create({
     },
     trackStyle: {
         height: 3,
+    },
+    missionStyle: {
+        fontSize: 14,
+        fontWeight: 'bold',
+        color: 'black'
+    },
+    iconStyle: {
+        fontSize: 16,
+        color: 'black',
     },
 });
 

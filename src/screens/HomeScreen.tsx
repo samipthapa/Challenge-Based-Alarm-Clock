@@ -37,7 +37,7 @@ function HomeScreen({ navigation }: { navigation: any }): JSX.Element {
             alarmList.forEach(alarm => {
                 const alarmTimeObject = new Date(alarm.date).toLocaleTimeString();
 
-                if (alarmTimeObject === currentTime) {
+                if (alarmTimeObject === currentTime && alarm.isEnabled) {
                     navigation.navigate('Preview');
                     console.log('Alarm triggered');
                 }

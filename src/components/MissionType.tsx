@@ -1,13 +1,16 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-function MissionType({ title, iconName, IconProvider }): JSX.Element {
+function MissionType({ title, iconName, IconProvider, navigation }): JSX.Element {
     return (
-        <View style={styles.container}>
-            <IconProvider name={iconName} style={styles.iconStyle}/>
+        <TouchableOpacity
+            style={styles.container}
+            onPress={() => navigation.navigate('Alarm', { title: title, iconName: iconName, IconProvider: IconProvider })}
+        >
+            <IconProvider name={iconName} style={styles.iconStyle} />
 
             <Text style={styles.nameStyle}>{title}</Text>
-        </View>
+        </TouchableOpacity>
     );
 };
 
