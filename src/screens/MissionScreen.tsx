@@ -21,19 +21,19 @@ function MissionScreen({ navigation }: { navigation: any }): JSX.Element {
                 <MissionType
                     title="Memory"
                     iconName="brain"
-                    IconProvider={MaterialCommunityIcons}
+                    IconProvider="MaterialCommunityIcons"
                     navigation={navigation}
                 />
                 <MissionType
                     title="Typing"
                     iconName="keyboard"
-                    IconProvider={FontAwesome5}
+                    IconProvider="FontAwesome5"
                     navigation={navigation}
                 />
                 <MissionType
                     title="Math"
                     iconName="calculate"
-                    IconProvider={MaterialIcons}
+                    IconProvider="MaterialIcons"
                     navigation={navigation}
                 />
             </View>
@@ -42,20 +42,20 @@ function MissionScreen({ navigation }: { navigation: any }): JSX.Element {
                 <Text style={styles.missionText}>Wake Your Body</Text>
                 <MissionType
                     title="Step"
-                    IconProvider={MaterialIcons}
+                    IconProvider="MaterialIcons"
                     iconName="directions-walk"
                     navigation={navigation}
                 />
                 <MissionType
                     title="Shake"
-                    IconProvider={AntDesign}
+                    IconProvider="AntDesign"
                     iconName="shake"
                     navigation={navigation}
                 />
                 <MissionType
                     title="Photo"
                     iconName="camera"
-                    IconProvider={Ionicons}
+                    IconProvider="Ionicons"
                     navigation={navigation}
                 />
             </View>

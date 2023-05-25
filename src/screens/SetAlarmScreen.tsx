@@ -6,19 +6,23 @@ import {
     SafeAreaView,
     TouchableOpacity,
 } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import DatePicker from 'react-native-date-picker';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import { Slider } from '@miblanchard/react-native-slider';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import ModalComponent from '../components/ModalComponent';
 import { CheckBox } from '@rneui/themed';
 import { openDatabase } from 'react-native-sqlite-storage';
 import { useRoute } from '@react-navigation/native';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 let db = openDatabase({ name: 'AlarmDatabase.db' });
 
 function SetAlarmScreen({ navigation }: { navigation: any }): JSX.Element {
+
     const [date, setDate] = useState(new Date());
     const [volume, setVolume] = useState(1.0);
     const [vibrate, setVibrate] = useState(true);
@@ -28,6 +32,26 @@ function SetAlarmScreen({ navigation }: { navigation: any }): JSX.Element {
     const title = route.params?.title;
     const iconName = route.params?.iconName;
     const IconProvider = route.params?.IconProvider;
+
+    let IconComponent = null;
+
+    switch (IconProvider) {
+        case 'MaterialCommunityIcons':
+            IconComponent = MaterialCommunityIcons;
+            break;
+        case 'FontAwesome5':
+            IconComponent = FontAwesome5;
+            break;
+        case 'MaterialIcons':
+            IconComponent = MaterialIcons;
+            break;
+        case 'AntDesign':
+            IconComponent = AntDesign;
+            break;
+        case 'Ionicons':
+            IconComponent = Ionicons;
+            break;
+    }
 
 
     const saveData = (): void => {
@@ -97,7 +121,7 @@ function SetAlarmScreen({ navigation }: { navigation: any }): JSX.Element {
                     onPress={() => navigation.navigate('Mission')}
                 >
                     {title && <View>
-                        <IconProvider name={iconName} style={styles.iconStyle} />
+                        <IconComponent name={iconName} style={styles.iconStyle} />
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.missionStyle}>{title}</Text>
                             <Ionicons name="chevron-forward" size={20} color="black" />
