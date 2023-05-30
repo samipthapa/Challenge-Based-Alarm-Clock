@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { useRoute } from '@react-navigation/native';
 
 function PreviewScreen({ navigation }): JSX.Element {
+
+    const mission = useRoute().params.mission;
 
     const currentDate = new Date().toLocaleDateString('en-US', {
         day: 'numeric',
@@ -58,12 +61,18 @@ function PreviewScreen({ navigation }): JSX.Element {
                 style={styles.dismissButton}
                 onPress={
                     () => {
-                        navigation.goBack();
-                        alarmTone.stop();
+                        if (mission == 'Math') {
+                            navigation.navigate('MathMission');
+                            alarmTone.stop();
+                        }
+                        else {
+                            navigation.goBack();
+                            alarmTone.stop();
+                        }
                     }
                 }
             >
-                <Text style={styles.dismissText}>Dismiss</Text>
+                {mission ? <Text style={styles.dismissText}>Start Mission</Text> : <Text style={styles.dismissText}>Dismiss</Text>}
             </TouchableOpacity>
         </View>
     )

@@ -25,8 +25,8 @@ function MathMissionScreen({ navigation }): JSX.Element {
 
             <View style={{ flexDirection: 'row', justifyContent: 'space-around', width: '95%', alignSelf: 'center', marginTop: 20, alignItems: 'center' }}>
                 <Text style={styles.textStyle}>=</Text>
-                {inputValue == '' && <Text style={[styles.textStyle, { fontSize: 25 }]}>{state}</Text>}
-                {inputValue != '' && <Text style={styles.textStyle}>{inputValue}</Text>}
+                {inputValue == '' ? <Text style={[styles.textStyle, { fontSize: 25 }]}>{state}</Text>
+                    : <Text style={styles.textStyle}>{inputValue}</Text>}
             </View>
 
             <CustomKeypad

@@ -43,7 +43,7 @@ function HomeScreen({ navigation }: { navigation: any }): JSX.Element {
                 const alarmTimeObject = new Date(alarm.date).toLocaleTimeString();
 
                 if (alarmTimeObject === currentTime && alarm.isEnabled) {
-                    navigation.navigate('Preview');
+                    navigation.navigate('Preview', { mission: alarm.mission });
                     console.log('Alarm triggered');
                 }
             });
