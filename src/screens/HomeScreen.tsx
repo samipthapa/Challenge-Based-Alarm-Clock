@@ -11,6 +11,7 @@ let db = openDatabase({ name: 'AlarmDatabase.db' });
 
 function HomeScreen({ navigation }: { navigation: any }): JSX.Element {
     const [alarmList, setAlarmList] = useState([]);
+    const [remainingTime, setRemainingTime] = useState("");
     const isFocused = useIsFocused();
 
     useSQLite();
@@ -20,6 +21,9 @@ function HomeScreen({ navigation }: { navigation: any }): JSX.Element {
             txn.executeSql("SELECT * FROM table_alarm", [],
                 (tx, res) => {
                     let temp = [];
+                    if (res.rows.length === 0) {
+                        setRemainingTime("No upcoming alarms");
+                    }
                     for (let i = 0; i < res.rows.length; ++i) {
                         temp.push(res.rows.item(i));
                     }
@@ -28,6 +32,7 @@ function HomeScreen({ navigation }: { navigation: any }): JSX.Element {
                 })
 
         });
+
     }, [isFocused]);
 
     useEffect(() => {
@@ -51,7 +56,7 @@ function HomeScreen({ navigation }: { navigation: any }): JSX.Element {
         <View style={styles.container}>
             <View>
                 <Text style={styles.nextAlarm}>Next alarm</Text>
-                <Text style={styles.countdown}>Alarm will ring in 11 hr. 43 min.</Text>
+                <Text style={styles.countdown}>{remainingTime}</Text>
                 <FlatList
                     data={alarmList}
                     renderItem={({ item, index }) => {

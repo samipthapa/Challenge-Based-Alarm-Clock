@@ -3,6 +3,7 @@ import SetAlarmScreen from './src/screens/SetAlarmScreen';
 import MissionScreen from './src/screens/MissionScreen';
 import UpdateAlarmScreen from './src/screens/UpdateAlarmScreen';
 import PreviewScreen from './src/screens/PreviewScreen';
+import MathMissionScreen from './src/screens/MathMissionScreen';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 
@@ -11,7 +12,7 @@ const Stack = createStackNavigator();
 const StackNavigator = () => {
   return (
     <Stack.Navigator
-      initialRouteName='Home'
+      initialRouteName='MathMission'
       screenOptions={{
         headerShown: false,
         cardStyle: { backgroundColor: '#FFFFFF' },
@@ -22,6 +23,7 @@ const StackNavigator = () => {
       <Stack.Screen name="Mission" component={MissionScreen} />
       <Stack.Screen name="Update" component={UpdateAlarmScreen} />
       <Stack.Screen name="Preview" component={PreviewScreen} />
+      <Stack.Screen name="MathMission" component={MathMissionScreen} />
     </Stack.Navigator>
   )
 }
