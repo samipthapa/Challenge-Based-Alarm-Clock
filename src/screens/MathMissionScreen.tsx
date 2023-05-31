@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { Text, StyleSheet, View } from 'react-native';
 import CustomKeypad from '../components/CustomKeypad';
+import CountdownTimer from '../components/CountdownTimer';
 
 function MathMissionScreen({ navigation }): JSX.Element {
     const [inputValue, setInputValue] = useState('');
@@ -20,20 +21,27 @@ function MathMissionScreen({ navigation }): JSX.Element {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.challengeStyle}>1/3</Text>
-            <Text style={styles.textStyle}>{num1}+{num2}</Text>
+            <CountdownTimer inputValue={inputValue} />
 
-            <View style={{ flexDirection: 'row', justifyContent: 'space-around', width: '95%', alignSelf: 'center', marginTop: 20, alignItems: 'center' }}>
-                <Text style={styles.textStyle}>=</Text>
-                {inputValue == '' ? <Text style={[styles.textStyle, { fontSize: 25 }]}>{state}</Text>
-                    : <Text style={styles.textStyle}>{inputValue}</Text>}
+            <View style={{ padding: 20, marginTop: 10 }}>
+                <Text style={styles.challengeStyle}>1/3</Text>
+
+                <View style={{ marginTop: '5%' }}>
+                    <Text style={styles.textStyle}>{num1}+{num2}</Text>
+
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-around', width: '95%', alignSelf: 'center', marginTop: 30, alignItems: 'center' }}>
+                        <Text style={styles.textStyle}>=</Text>
+                        {inputValue == '' ? <Text style={[styles.textStyle, { fontSize: 25 }]}>{state}</Text>
+                            : <Text style={styles.textStyle}>{inputValue}</Text>}
+                    </View>
+
+                    <CustomKeypad
+                        onChange={(value: string) => setInputValue(prev => prev + value)}
+                        onBackspace={() => setInputValue(prev => prev.slice(0, -1))}
+                        isCorrect={isCorrect}
+                    />
+                </View>
             </View>
-
-            <CustomKeypad
-                onChange={(value: string) => setInputValue(prev => prev + value)}
-                onBackspace={() => setInputValue(prev => prev.slice(0, -1))}
-                isCorrect={isCorrect}
-            />
         </View>
     );
 }
@@ -42,7 +50,6 @@ const styles = StyleSheet.create({
     container: {
         height: '100%',
         backgroundColor: 'rgb(32,33,37)',
-        padding: 20
     },
     textStyle: {
         color: 'white',

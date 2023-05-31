@@ -93,6 +93,7 @@ function SetAlarmScreen({ navigation }: { navigation: any }): JSX.Element {
                         date={date}
                         onDateChange={setDate}
                         mode="time"
+                        textColor='black'
                     />
                 </View>
 

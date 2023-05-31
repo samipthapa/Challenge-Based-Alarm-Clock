@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useRoute } from '@react-navigation/native';
+import Sound from 'react-native-sound';
 
 function PreviewScreen({ navigation }): JSX.Element {
 
