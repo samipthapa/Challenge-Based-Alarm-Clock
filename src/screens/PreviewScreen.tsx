@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useRoute } from '@react-navigation/native';
-import Sound from 'react-native-sound';
+import useAlarmTone from '../hooks/useAlarmTone';
 
 function PreviewScreen({ navigation }): JSX.Element {
 
@@ -23,23 +23,7 @@ function PreviewScreen({ navigation }): JSX.Element {
         return () => clearInterval(interval);
     }, []);
 
-    var Sound = require('react-native-sound');
-    Sound.setCategory('Playback');
-
-    var alarmTone = new Sound('casino.mp3', Sound.MAIN_BUNDLE, (error) => {
-        if (error) {
-            console.log('failed to load the sound', error);
-            return;
-        }
-
-        alarmTone.play(success => {
-            if (success) {
-                console.log('successfully finished playing');
-            } else {
-                console.log('Error');
-            }
-        });
-    });
+    const alarmTone = useAlarmTone('casino.mp3');
 
     return (
         <View style={styles.container}>

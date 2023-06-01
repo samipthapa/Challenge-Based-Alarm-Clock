@@ -19,9 +19,18 @@ function MathMissionScreen({ navigation }): JSX.Element {
         setState(result ? '✓' : '❌');
     }
 
+    const handleCountdownFinish = () => {
+        setTimeout(() => {
+            navigation.navigate('Preview', { mission: 'Math' });
+        }, 0);
+    };
+
     return (
         <View style={styles.container}>
-            <CountdownTimer inputValue={inputValue} />
+            <CountdownTimer
+                inputValue={inputValue}
+                onCountdownFinish={handleCountdownFinish}
+            />
 
             <View style={{ padding: 20, marginTop: 10 }}>
                 <Text style={styles.challengeStyle}>1/3</Text>

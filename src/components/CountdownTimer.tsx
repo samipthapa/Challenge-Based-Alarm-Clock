@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text } from 'react-native';
 import ProgressBar from 'react-native-progress/Bar';
 
-function CountdownTimer({ inputValue }): JSX.Element {
+function CountdownTimer({ inputValue, onCountdownFinish }): JSX.Element {
     const [seconds, setSeconds] = useState(30);
     const [progress, setProgress] = useState(1);
 
@@ -17,13 +17,14 @@ function CountdownTimer({ inputValue }): JSX.Element {
                     return prevSeconds - 1;
                 } else {
                     clearInterval(timer);
+                    onCountdownFinish();
                     return 0;
                 }
             });
         }, 1000);
 
         return () => clearInterval(timer);
-    }, []);
+    }, [seconds, onCountdownFinish]);
 
     useEffect(() => {
         setProgress(seconds / 30);
