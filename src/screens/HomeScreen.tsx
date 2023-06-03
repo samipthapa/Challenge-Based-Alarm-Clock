@@ -63,12 +63,8 @@ function HomeScreen({ navigation }: { navigation: any }): JSX.Element {
                         return (
                             <TouchableOpacity
                                 activeOpacity={0.6}
-                                onPress={() => navigation.navigate('Update', {
-                                    data: {
-                                        date: item.date,
-                                        isActive: item.isEnabled,
-                                        alarmID: item.alarmID,
-                                    }
+                                onPress={() => navigation.navigate('Alarm', {
+                                    alarmID: item.alarmID,
                                 })}
                             >
                                 <AlarmDetail

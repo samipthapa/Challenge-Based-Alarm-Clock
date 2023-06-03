@@ -2,27 +2,42 @@ import React, { useState, useMemo } from 'react';
 import { Text, StyleSheet, View } from 'react-native';
 import CustomKeypad from '../components/CustomKeypad';
 import CountdownTimer from '../components/CountdownTimer';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 function MathMissionScreen({ navigation }): JSX.Element {
     const [inputValue, setInputValue] = useState('');
     const [state, setState] = useState('?');
+    const [count, setCount] = useState(1);
 
     const [num1, num2] = useMemo(() => {
         const n1 = Math.floor(Math.random() * 91) + 10;
         const n2 = Math.floor(Math.random() * 91) + 10;
         return [n1, n2];
-    }, []);
+    }, [count]);
 
     function isCorrect(): void {
+        if (count == 3) {
+            navigation.navigate('Home');
+        }
         const result = num1 + num2 === Number(inputValue);
         setInputValue('');
         setState(result ? '✓' : '❌');
+
+        if (result) {
+            setCount(prev => prev + 1);
+
+            setTimeout(() => {
+                setState('?');
+            }, 500);
+        } else {
+            setTimeout(() => {
+                setState('?');
+            }, 500);
+        }
     }
 
     const handleCountdownFinish = () => {
-        setTimeout(() => {
-            navigation.navigate('Preview', { mission: 'Math' });
-        }, 0);
+        navigation.navigate('Preview', { mission: 'Math' });
     };
 
     return (
@@ -33,7 +48,12 @@ function MathMissionScreen({ navigation }): JSX.Element {
             />
 
             <View style={{ padding: 20, marginTop: 10 }}>
-                <Text style={styles.challengeStyle}>1/3</Text>
+                <View style={{ flexDirection: 'row' }}>
+                    <Ionicons name="chevron-back" size={30} color="white"
+                        onPress={() => navigation.navigate('Preview', { mission: 'Math' })}
+                    />
+                    <Text style={styles.challengeStyle}>{count}/3</Text>
+                </View>
 
                 <View style={{ marginTop: '5%' }}>
                     <Text style={styles.textStyle}>{num1}+{num2}</Text>
@@ -71,7 +91,8 @@ const styles = StyleSheet.create({
         color: 'white',
         textAlign: 'center',
         marginBottom: 70,
-        fontSize: 16
+        fontSize: 16,
+        marginLeft: '40%',
     },
     squares: {
         backgroundColor: 'white',

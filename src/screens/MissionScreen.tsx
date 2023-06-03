@@ -1,13 +1,10 @@
 import React from 'react';
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MissionType from '../components/MissionType';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 function MissionScreen({ navigation }: { navigation: any }): JSX.Element {
+
     return (
         <View style={styles.container}>
             <View style={styles.headerStyle}>
@@ -20,20 +17,14 @@ function MissionScreen({ navigation }: { navigation: any }): JSX.Element {
                 <Text style={styles.missionText}>Wake Your Brain</Text>
                 <MissionType
                     title="Memory"
-                    iconName="brain"
-                    IconProvider="MaterialCommunityIcons"
                     navigation={navigation}
                 />
                 <MissionType
                     title="Typing"
-                    iconName="keyboard"
-                    IconProvider="FontAwesome5"
                     navigation={navigation}
                 />
                 <MissionType
                     title="Math"
-                    iconName="calculate"
-                    IconProvider="MaterialIcons"
                     navigation={navigation}
                 />
             </View>
@@ -42,20 +33,14 @@ function MissionScreen({ navigation }: { navigation: any }): JSX.Element {
                 <Text style={styles.missionText}>Wake Your Body</Text>
                 <MissionType
                     title="Step"
-                    IconProvider="MaterialIcons"
-                    iconName="directions-walk"
                     navigation={navigation}
                 />
                 <MissionType
                     title="Shake"
-                    IconProvider="AntDesign"
-                    iconName="shake"
                     navigation={navigation}
                 />
                 <MissionType
                     title="Photo"
-                    iconName="camera"
-                    IconProvider="Ionicons"
                     navigation={navigation}
                 />
             </View>

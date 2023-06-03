@@ -12,26 +12,52 @@ import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIc
 import ModalComponent from '../components/ModalComponent';
 import { CheckBox } from '@rneui/themed';
 import { openDatabase } from 'react-native-sqlite-storage';
-import { useRoute } from '@react-navigation/native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import store from '../redux/store';
+import { useRoute } from '@react-navigation/native';
+import { useDispatch } from 'react-redux';
+import { setUpdate } from '../redux/actions';
+import { setAlarmID } from '../redux/actions';
+import { useSelector } from 'react-redux';
 
 let db = openDatabase({ name: 'AlarmDatabase.db' });
 
 function SetAlarmScreen({ navigation }: { navigation: any }): JSX.Element {
+    const dispatch = useDispatch();
+    const route = useRoute();
+    const mission = route.params?.title;
 
     const [date, setDate] = useState(new Date());
+    const [title, setTitle] = useState('');
     const [volume, setVolume] = useState(1.0);
     const [vibrate, setVibrate] = useState(true);
     const [modalVisible, setModalVisible] = useState(false);
 
-    const route = useRoute();
-    const title = route.params?.title;
-    const iconName = route.params?.iconName;
-    const IconProvider = route.params?.IconProvider;
+    useEffect(() => {
+        if (mission)
+            setTitle(mission);
+    }, [mission]);
+
+    useEffect(() => {
+        if (route.params?.alarmID) {
+            db.transaction(txn => {
+                txn.executeSql("SELECT * FROM table_alarm where alarmID=?", [route.params.alarmID], (tx, res) => {
+                    const data = res.rows.item(0);
+                    console.log(data);
+                    const date = new Date(data.date);
+                    setDate(date);
+                    setTitle(data.mission);
+                    dispatch(setAlarmID(route.params.alarmID));
+                })
+            })
+        }
+    }, []);
+
+    const { iconName, IconProvider } = store.getState()?.[title] ?? {};
 
     let IconComponent = null;
 
@@ -53,25 +79,42 @@ function SetAlarmScreen({ navigation }: { navigation: any }): JSX.Element {
             break;
     }
 
+    const alarmID = useSelector(state => state.alarmID);
 
     const saveData = (): void => {
-        const dateStr = date.toISOString();
 
-        db.transaction(txn => {
-            txn.executeSql(
-                'INSERT INTO table_alarm(isEnabled, date, mission) VALUES (?, ?, ?)',
-                [true, dateStr, title],
-                (tx, res) => {
-                    if (res.rowsAffected == 1) {
-                        navigation.goBack();
+        if (alarmID !== 0) {
+            const dateStr = date.toISOString();
+            console.log(title);
+
+            db.transaction(txn => {
+                txn.executeSql("UPDATE table_alarm set date=?, mission=? where alarmID=?", [dateStr, title, alarmID], (tx, res) => {
+                    navigation.goBack();
+                })
+            })
+            dispatch(setAlarmID(0));
+        }
+
+        else {
+            const dateStr = date.toISOString();
+
+            db.transaction(txn => {
+                txn.executeSql(
+                    'INSERT INTO table_alarm(isEnabled, date, mission) VALUES (?, ?, ?)',
+                    [true, dateStr, title],
+                    (tx, res) => {
+                        if (res.rowsAffected == 1) {
+                            navigation.goBack();
+                        }
+                        console.log(res)
+                    },
+                    error => {
+                        console.log(error);
                     }
-                    console.log(res)
-                },
-                error => {
-                    console.log(error);
-                }
-            );
-        })
+                );
+            })
+        }
+
     };
 
     return (

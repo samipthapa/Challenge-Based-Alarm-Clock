@@ -1,13 +1,15 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, StyleSheet, TouchableOpacity } from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import store from '../redux/store';
 
-function MissionType({ title, iconName, IconProvider, navigation }): JSX.Element {
+function MissionType({ title, navigation }): JSX.Element {
     let IconComponent = null;
+    const { iconName, IconProvider } = store.getState()[title];
 
     switch (IconProvider) {
         case 'MaterialCommunityIcons':
@@ -30,7 +32,7 @@ function MissionType({ title, iconName, IconProvider, navigation }): JSX.Element
     return (
         <TouchableOpacity
             style={styles.container}
-            onPress={() => navigation.navigate('Alarm', { title, iconName, IconProvider })}
+            onPress={() => navigation.navigate('Alarm', { title })}
         >
             <IconComponent name={iconName} style={styles.iconStyle} />
 
