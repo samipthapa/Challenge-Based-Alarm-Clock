@@ -29,6 +29,11 @@ const initialState = {
         "iconName": "camera",
         "IconProvider": "Ionicons",
     },
+    "": {
+        "title": "",
+        "iconName": "cross",
+        "IconProvider": "Entypo",
+    },
     "alarmID": 0
 };
 

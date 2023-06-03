@@ -71,6 +71,7 @@ function HomeScreen({ navigation }: { navigation: any }): JSX.Element {
                                     date={item.date}
                                     isActive={item.isEnabled}
                                     alarmID={item.alarmID}
+                                    mission={item.mission}
                                     setAlarmList={setAlarmList}
                                 />
                             </TouchableOpacity>

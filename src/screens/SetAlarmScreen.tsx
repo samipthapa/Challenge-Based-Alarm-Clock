@@ -20,7 +20,6 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import store from '../redux/store';
 import { useRoute } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
-import { setUpdate } from '../redux/actions';
 import { setAlarmID } from '../redux/actions';
 import { useSelector } from 'react-redux';
 
