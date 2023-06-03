@@ -1,41 +1,34 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useRoute } from '@react-navigation/native';
-import useAlarmTone from '../hooks/useAlarmTone';
+import TimeComponent from '../components/TimeComponent';
 
 function PreviewScreen({ navigation }): JSX.Element {
+    const mission = useRoute().params?.mission;
 
-    const mission = useRoute().params.mission;
+    console.log('Preview Screen Rendered');
 
-    const currentDate = new Date().toLocaleDateString('en-US', {
-        day: 'numeric',
-        month: 'short',
-        weekday: 'short',
+    var Sound = require('react-native-sound');
+    Sound.setCategory('Playback');
+
+    Sound.setCategory('Playback');
+    const alarmTone = new Sound('casino.mp3', Sound.MAIN_BUNDLE, (error) => {
+        if (error) {
+            console.log('failed to load the sound', error);
+            return;
+        }
+        alarmTone.play(success => {
+            if (success) {
+                console.log('successfully finished playing');
+            } else {
+                console.log('Error');
+            }
+        });
     });
-
-    const [currentTime, setCurrentTime] = useState(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setCurrentTime(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
-        }, 60000);
-
-        return () => clearInterval(interval);
-    }, []);
-
-    const alarmTone = useAlarmTone('casino.mp3');
 
     return (
         <View style={styles.container}>
-            <View style={{ flexDirection: 'column' }}>
-                <View style={styles.circle1} />
-                <View style={styles.circle2} />
-                <Text style={styles.dateStyle}>{currentDate}</Text>
-            </View>
-
-            <Text style={styles.timeStyle}>{currentTime}</Text>
-            <View style={styles.circle3} />
-
+            <TimeComponent />
             <TouchableOpacity
                 style={styles.snoozeButton}
             >
@@ -82,18 +75,6 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         alignSelf: 'center'
     },
-    dateStyle: {
-        color: 'white',
-        textAlign: 'center',
-        fontSize: 19,
-        fontWeight: '600',
-    },
-    timeStyle: {
-        color: 'white',
-        textAlign: 'center',
-        fontSize: 65,
-        fontWeight: '700',
-    },
     snoozeButton: {
         backgroundColor: 'rgb(198,204,218)',
         width: '25%',
@@ -107,29 +88,6 @@ const styles = StyleSheet.create({
         fontSize: 17,
         fontWeight: '600',
         alignSelf: 'center'
-    },
-    circle1: {
-        width: 5,
-        height: 5,
-        borderRadius: 25,
-        backgroundColor: 'rgb(154,162,181)',
-        marginLeft: '20%'
-    },
-    circle2: {
-        width: 4,
-        height: 4,
-        borderRadius: 25,
-        backgroundColor: 'rgb(103,122,142)',
-        marginLeft: '25%',
-        marginTop: '2%'
-    },
-    circle3: {
-        width: 5,
-        height: 5,
-        borderRadius: 25,
-        backgroundColor: 'rgb(154,162,181)',
-        alignSelf: 'flex-end',
-        marginRight: '20%',
     },
 });
 
