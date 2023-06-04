@@ -3,6 +3,7 @@ import SetAlarmScreen from './src/screens/SetAlarmScreen';
 import MissionScreen from './src/screens/MissionScreen';
 import PreviewScreen from './src/screens/PreviewScreen';
 import MathMissionScreen from './src/screens/MathMissionScreen';
+import TypingScreen from './src/screens/TypingScreen';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { Provider } from 'react-redux';
@@ -24,6 +25,7 @@ const StackNavigator = () => {
       <Stack.Screen name="Mission" component={MissionScreen} />
       <Stack.Screen name="Preview" component={PreviewScreen} />
       <Stack.Screen name="MathMission" component={MathMissionScreen} />
+      <Stack.Screen name="TypingMission" component={TypingScreen} />
     </Stack.Navigator>
   )
 }

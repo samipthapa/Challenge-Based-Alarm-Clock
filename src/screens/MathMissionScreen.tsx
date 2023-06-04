@@ -16,7 +16,7 @@ function MathMissionScreen({ navigation }): JSX.Element {
     }, [count]);
 
     function isCorrect(): void {
-        if (count == 3) {
+        if (count == 3 && num1 + num2 === Number(inputValue)) {
             navigation.navigate('Home');
         }
         const result = num1 + num2 === Number(inputValue);

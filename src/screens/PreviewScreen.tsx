@@ -24,7 +24,9 @@ function PreviewScreen({ navigation }): JSX.Element {
                 console.log('Error');
             }
         });
+        alarmTone.setNumberOfLoops(-1);
     });
+
 
     return (
         <View style={styles.container}>
@@ -39,13 +41,14 @@ function PreviewScreen({ navigation }): JSX.Element {
                 style={styles.dismissButton}
                 onPress={
                     () => {
-                        if (mission == 'Math') {
-                            navigation.navigate('MathMission');
-                            alarmTone.stop();
-                        }
-                        else {
-                            navigation.goBack();
-                            alarmTone.stop();
+                        alarmTone.stop();
+                        switch (mission) {
+                            case 'Math':
+                                navigation.navigate('MathMission');
+                                break;
+                            case 'Typing':
+                                navigation.navigate('TypingMission');
+                                break;
                         }
                     }
                 }

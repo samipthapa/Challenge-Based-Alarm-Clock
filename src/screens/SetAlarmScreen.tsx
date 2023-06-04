@@ -156,7 +156,6 @@ function SetAlarmScreen({ navigation }: { navigation: any }): JSX.Element {
             <View style={styles.section}>
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={styles.repeatText}>Mission</Text>
-                    <Text style={{ fontSize: 16, marginLeft: 5 }}> 0/3</Text>
                 </View>
 
                 <TouchableOpacity
