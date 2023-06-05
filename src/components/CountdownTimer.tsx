@@ -17,11 +17,12 @@ function CountdownTimer({ inputValue, onCountdownFinish }): JSX.Element {
                     return prevSeconds - 1;
                 } else {
                     clearInterval(timer);
-                    onCountdownFinish();
                     return 0;
                 }
             });
         }, 1000);
+
+        if (seconds === 0) onCountdownFinish();
 
         return () => clearInterval(timer);
     }, [seconds, onCountdownFinish]);
