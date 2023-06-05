@@ -5,6 +5,7 @@ import TimeComponent from '../components/TimeComponent';
 
 function PreviewScreen({ navigation }): JSX.Element {
     const mission = useRoute().params?.mission;
+    const sound = useRoute().params?.sound;
 
     console.log('Preview Screen Rendered');
 
@@ -12,7 +13,7 @@ function PreviewScreen({ navigation }): JSX.Element {
     Sound.setCategory('Playback');
 
     Sound.setCategory('Playback');
-    const alarmTone = new Sound('casino.mp3', Sound.MAIN_BUNDLE, (error) => {
+    const alarmTone = new Sound(sound, Sound.MAIN_BUNDLE, (error) => {
         if (error) {
             console.log('failed to load the sound', error);
             return;
@@ -48,6 +49,9 @@ function PreviewScreen({ navigation }): JSX.Element {
                                 break;
                             case 'Typing':
                                 navigation.navigate('TypingMission');
+                                break;
+                            default:
+                                navigation.navigate('Home');
                                 break;
                         }
                     }

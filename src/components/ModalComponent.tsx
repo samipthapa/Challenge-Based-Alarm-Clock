@@ -1,8 +1,8 @@
-import React, {useState} from 'react';
-import { 
-    Text, 
-    View, 
-    StyleSheet, 
+import React, { useState } from 'react';
+import {
+    Text,
+    View,
+    StyleSheet,
     Modal,
     TouchableOpacity,
     FlatList
@@ -18,87 +18,87 @@ function ModalComponent({ visibility, onChangeVisibility }): JSX.Element {
         { day: 'Thursday', active: false },
         { day: 'Friday', active: false },
         { day: 'Saturday', active: false },
-      ]);
+    ]);
     return (
         <Modal
             transparent={true}
             visible={visibility}
         >
-            <View style={{backgroundColor: '#000000aa', flex: 1}}>
-                    <View style={styles.modalStyle}>
-                        <Text style={styles.titleStyle}>Repeat</Text>
+            <View style={{ backgroundColor: '#000000aa', flex: 1 }}>
+                <View style={styles.modalStyle}>
+                    <Text style={styles.titleStyle}>Repeat</Text>
 
-                        <View style={styles.row}>
-                            <TouchableOpacity
-                                style={styles.buttonStyle}
-                                onPress={() =>  setDays((prevDays) => {
-                                    const weekdaysTrue = prevDays.slice(1, 6).every((day) => day.active);
+                    <View style={styles.row}>
+                        <TouchableOpacity
+                            style={styles.buttonStyle}
+                            onPress={() => setDays((prevDays) => {
+                                const weekdaysTrue = prevDays.slice(1, 6).every((day) => day.active);
 
-                                    return prevDays.map((day, index) => {
-                                      if (index >= 1 && index <= 5) {
+                                return prevDays.map((day, index) => {
+                                    if (index >= 1 && index <= 5) {
                                         return { ...day, active: !weekdaysTrue };
                                     }
-                                      return day;
-                                    })
-                                  })
-                                }
-                            >
-                                <Text style={styles.buttonText}>+Weekdays</Text>
-                            </TouchableOpacity>
-                        
-                            <TouchableOpacity
-                                style={styles.buttonStyle}
-                                onPress={() =>  setDays((prevDays) => {
-                                    const weekendsTrue = prevDays[0].active && prevDays[6].active;
-
-                                    return prevDays.map((day, index) => {
-                                      if (index === 0 || index === 6) {
-                                            return { ...day, active: !weekendsTrue };
-                                    } 
-                                      return day;
-                                    })
-                                  })
-                                }
-                            >
-                                <Text style={styles.buttonText}>+Weekends</Text>
-                            </TouchableOpacity>
-                        </View>
-
-                        <FlatList
-                            data={days}
-                            renderItem={({item, index}) => {
-                                return (
-                                    <TouchableOpacity 
-                                        style={{flexDirection: 'row', alignItems: 'center'}}
-                                        onPress={() => setDays((prev) => {
-                                            const newDays = [...prev];
-                                            newDays[index].active = !newDays[index].active;
-                                            return newDays;
-                                        })}
-                                        activeOpacity={1}
-                                    >
-                                        <CheckBox
-                                            checked={item.active}
-                                            iconType="material-community"
-                                            checkedIcon="checkbox-marked"
-                                            uncheckedIcon="checkbox-blank-outline"
-                                            checkedColor="rgb(35,167,199)"
-                                        />
-                                        <Text>{item.day}</Text>
-                                    </TouchableOpacity>
-                                )
-                            }}
-                            keyExtractor={(item) => item.day}
-                        />
-
-                        <TouchableOpacity 
-                            style={styles.doneStyle}
-                            onPress={onChangeVisibility}
+                                    return day;
+                                })
+                            })
+                            }
                         >
-                            <Text style={styles.doneText}>Done</Text>
+                            <Text style={styles.buttonText}>+Weekdays</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity
+                            style={styles.buttonStyle}
+                            onPress={() => setDays((prevDays) => {
+                                const weekendsTrue = prevDays[0].active && prevDays[6].active;
+
+                                return prevDays.map((day, index) => {
+                                    if (index === 0 || index === 6) {
+                                        return { ...day, active: !weekendsTrue };
+                                    }
+                                    return day;
+                                })
+                            })
+                            }
+                        >
+                            <Text style={styles.buttonText}>+Weekends</Text>
                         </TouchableOpacity>
                     </View>
+
+                    <FlatList
+                        data={days}
+                        renderItem={({ item, index }) => {
+                            return (
+                                <TouchableOpacity
+                                    style={{ flexDirection: 'row', alignItems: 'center' }}
+                                    onPress={() => setDays((prev) => {
+                                        const newDays = [...prev];
+                                        newDays[index].active = !newDays[index].active;
+                                        return newDays;
+                                    })}
+                                    activeOpacity={1}
+                                >
+                                    <CheckBox
+                                        checked={item.active}
+                                        iconType="material-community"
+                                        checkedIcon="checkbox-marked"
+                                        uncheckedIcon="checkbox-blank-outline"
+                                        checkedColor="rgb(35,167,199)"
+                                    />
+                                    <Text style={{ color: 'grey', fontSize: 16 }}>{item.day}</Text>
+                                </TouchableOpacity>
+                            )
+                        }}
+                        keyExtractor={(item) => item.day}
+                    />
+
+                    <TouchableOpacity
+                        style={styles.doneStyle}
+                        onPress={onChangeVisibility}
+                    >
+                        <Text style={styles.doneText}>Done</Text>
+                    </TouchableOpacity>
                 </View>
+            </View>
 
         </Modal>
     );
@@ -106,10 +106,10 @@ function ModalComponent({ visibility, onChangeVisibility }): JSX.Element {
 
 const styles = StyleSheet.create({
     modalStyle: {
-        backgroundColor: '#ffffff', 
-        marginTop: '49%', 
-        marginHorizontal: 15, 
-        height: '73%', 
+        backgroundColor: '#ffffff',
+        marginTop: '65%',
+        marginHorizontal: 15,
+        height: '65%',
         borderRadius: 7,
         padding: 25
     },
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     row: {
-        flexDirection: 'row', 
+        flexDirection: 'row',
         justifyContent: 'space-between',
         marginTop: 15
     },

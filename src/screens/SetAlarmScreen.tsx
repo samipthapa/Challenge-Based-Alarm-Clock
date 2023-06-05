@@ -29,6 +29,13 @@ function SetAlarmScreen({ navigation }: { navigation: any }): JSX.Element {
     const dispatch = useDispatch();
     const route = useRoute();
     const mission = route.params?.title;
+    const [sound, setSound] = useState('casino.mp3');
+
+    useEffect(() => {
+        if (route.params?.sound) {
+            setSound(route.params?.sound);
+        }
+    }, [route.params?.sound]);
 
     const [date, setDate] = useState(new Date());
     const [title, setTitle] = useState('');
@@ -50,6 +57,7 @@ function SetAlarmScreen({ navigation }: { navigation: any }): JSX.Element {
                     const date = new Date(data.date);
                     setDate(date);
                     setTitle(data.mission);
+                    setSound(data.sound);
                     dispatch(setAlarmID(route.params.alarmID));
                 })
             })
@@ -87,7 +95,7 @@ function SetAlarmScreen({ navigation }: { navigation: any }): JSX.Element {
             console.log(title);
 
             db.transaction(txn => {
-                txn.executeSql("UPDATE table_alarm set date=?, mission=? where alarmID=?", [dateStr, title, alarmID], (tx, res) => {
+                txn.executeSql("UPDATE table_alarm set date=?, mission=?, sound=? where alarmID=?", [dateStr, title, sound, alarmID], (tx, res) => {
                     navigation.goBack();
                 })
             })
@@ -99,8 +107,8 @@ function SetAlarmScreen({ navigation }: { navigation: any }): JSX.Element {
 
             db.transaction(txn => {
                 txn.executeSql(
-                    'INSERT INTO table_alarm(isEnabled, date, mission) VALUES (?, ?, ?)',
-                    [true, dateStr, title],
+                    'INSERT INTO table_alarm(isEnabled, date, mission, sound) VALUES (?, ?, ?, ?)',
+                    [true, dateStr, title, sound],
                     (tx, res) => {
                         if (res.rowsAffected == 1) {
                             navigation.goBack();
@@ -215,13 +223,20 @@ function SetAlarmScreen({ navigation }: { navigation: any }): JSX.Element {
                     />
                 </View>
 
-                <View style={styles.configuration}>
+                <TouchableOpacity
+                    style={styles.configuration}
+                    onPress={() => navigation.navigate('Sound')}
+                >
                     <Text style={styles.repeatText}>Sound</Text>
                     <View style={{ flexDirection: 'row', alignItems: 'flex-end' }}>
-                        <Text style={{ fontSize: 16, color: 'black' }}>Homecoming</Text>
+                        <Text style={{ fontSize: 16, color: 'black' }}>
+                            {sound === 'casino.mp3' && 'Casino'}
+                            {sound === 'retro.mp3' && 'Retro'}
+                            {sound === 'rooster.mp3' && 'Rooster'}
+                        </Text>
                         <Ionicons name="chevron-forward" size={16} color="gray" />
                     </View>
-                </View>
+                </TouchableOpacity>
 
                 <View style={styles.configuration}>
                     <Text style={styles.repeatText}>Snooze</Text>
