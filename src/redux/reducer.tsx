@@ -34,7 +34,8 @@ const initialState = {
         "iconName": "cross",
         "IconProvider": "Entypo",
     },
-    "alarmID": 0
+    "alarmID": 0,
+    "sound": "",
 };
 
 const reducer = (state = initialState, action) => {
@@ -43,6 +44,11 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 "alarmID": action.payload
+            };
+        case 'SOUND':
+            return {
+                ...state,
+                "sound": action.payload
             };
         default:
             return state;

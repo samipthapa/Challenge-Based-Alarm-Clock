@@ -3,7 +3,7 @@ import { View, Text } from 'react-native';
 import ProgressBar from 'react-native-progress/Bar';
 
 function CountdownTimer({ inputValue, onCountdownFinish }): JSX.Element {
-    const [seconds, setSeconds] = useState(30);
+    const [seconds, setSeconds] = useState(15);
     const [progress, setProgress] = useState(1);
 
     useEffect(() => {

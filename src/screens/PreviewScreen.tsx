@@ -2,10 +2,12 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import TimeComponent from '../components/TimeComponent';
+import { useSelector } from 'react-redux';
 
 function PreviewScreen({ navigation }): JSX.Element {
     const mission = useRoute().params?.mission;
-    const sound = useRoute().params?.sound;
+    const sound = useSelector(state => state.sound);
+    console.log(sound);
 
     console.log('Preview Screen Rendered');
 

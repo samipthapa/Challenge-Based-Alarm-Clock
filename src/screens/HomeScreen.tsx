@@ -4,6 +4,7 @@ import AlarmDetail from '../components/AlarmDetail';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import useSQLite from '../hooks/useSQLite';
 import { useIsFocused } from '@react-navigation/native';
+import { useDispatch } from 'react-redux';
 
 import { openDatabase } from 'react-native-sqlite-storage';
 
@@ -13,6 +14,7 @@ function HomeScreen({ navigation }: { navigation: any }): JSX.Element {
     const [alarmList, setAlarmList] = useState([]);
     const [remainingTime, setRemainingTime] = useState("");
     const isFocused = useIsFocused();
+    const dispatch = useDispatch();
 
     useSQLite();
 
@@ -43,7 +45,8 @@ function HomeScreen({ navigation }: { navigation: any }): JSX.Element {
                 const alarmTimeObject = new Date(alarm.date).toLocaleTimeString();
 
                 if (alarmTimeObject === currentTime && alarm.isEnabled) {
-                    navigation.navigate('Preview', { mission: alarm.mission, sound: alarm.sound });
+                    dispatch({ type: 'SOUND', payload: alarm.sound });
+                    navigation.navigate('Preview', { mission: alarm.mission });
                     console.log('Alarm triggered');
                 }
             });

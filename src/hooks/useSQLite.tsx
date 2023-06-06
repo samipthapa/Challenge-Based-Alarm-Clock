@@ -26,7 +26,6 @@ const useSQLite = () => {
       );
     });
   }, []);
-
 };
 
 export default useSQLite;

@@ -4,3 +4,10 @@ export const setAlarmID = (alarmID: number) => {
         payload: alarmID
     }
 }
+
+export const setSound = (sound: string) => {
+    return {
+        type: 'SOUND',
+        payload: sound
+    }
+}
