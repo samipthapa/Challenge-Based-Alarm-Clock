@@ -5,6 +5,7 @@ import PreviewScreen from './src/screens/PreviewScreen';
 import MathMissionScreen from './src/screens/MathMissionScreen';
 import TypingScreen from './src/screens/TypingScreen';
 import SoundScreen from './src/screens/SoundScreen';
+import PhotosScreen from './src/screens/PhotosScreen';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { Provider } from 'react-redux';
@@ -15,7 +16,7 @@ const Stack = createStackNavigator();
 const StackNavigator = () => {
   return (
     <Stack.Navigator
-      initialRouteName='Home'
+      initialRouteName='Photos'
       screenOptions={{
         headerShown: false,
         cardStyle: { backgroundColor: '#FFFFFF' },
@@ -28,6 +29,7 @@ const StackNavigator = () => {
       <Stack.Screen name="MathMission" component={MathMissionScreen} />
       <Stack.Screen name="TypingMission" component={TypingScreen} />
       <Stack.Screen name="Sound" component={SoundScreen} />
+      <Stack.Screen name="Photos" component={PhotosScreen} />
     </Stack.Navigator>
   )
 }
