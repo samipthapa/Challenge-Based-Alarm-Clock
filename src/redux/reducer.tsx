@@ -1,3 +1,6 @@
+import { persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage";
+
 const initialState = {
     "Memory": {
         "title": "Memory",
@@ -36,6 +39,13 @@ const initialState = {
     },
     "alarmID": 0,
     "sound": "",
+    "imagePath": []
+};
+
+const persistConfig = {
+    key: 'root',
+    storage,
+    whitelist: ['imagePath'],
 };
 
 const reducer = (state = initialState, action) => {
@@ -50,9 +60,14 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 "sound": action.payload
             };
+        case 'IMAGEPATH':
+            return {
+                ...state,
+                "imagePath": [...state.imagePath, action.payload]
+            };
         default:
             return state;
     }
 };
 
-export default reducer;
+export default persistReducer(persistConfig, reducer);

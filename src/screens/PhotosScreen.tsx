@@ -1,11 +1,15 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image, FlatList } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView } from "react-native";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import ImagePicker from 'react-native-image-crop-picker';
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { setImagePath } from "../redux/actions";
 
 function PhotosScreen(): JSX.Element {
     const [image, setImage] = React.useState<string[]>([]);
+    const dispatch = useDispatch();
 
     const takePhotoFromCamera = () => {
         ImagePicker.openCamera({
@@ -13,13 +17,16 @@ function PhotosScreen(): JSX.Element {
             height: 400,
             cropping: false,
         }).then(image => {
-            console.log(image);
             setImage(prev => [
                 ...prev,
                 image.path
             ]);
+            dispatch(setImagePath(image.path));
         });
     };
+
+    const paths = useSelector(state => state.imagePath);
+    console.log(paths);
 
     return (
         <View style={styles.container}>
@@ -28,23 +35,24 @@ function PhotosScreen(): JSX.Element {
             <Text style={styles.textStyle}>Photo</Text>
             <Text style={styles.subheading}>Take photo of the place you set in advance</Text>
 
-            {image &&
-                <FlatList
-                    data={image}
-                    numColumns={2}
-                    renderItem={({ item }) => {
-                        return (
-                            <Image
-                                source={{ uri: item }}
-                                style={styles.imageStyle}
-                            />
-                        )
-                    }}
-                    keyExtractor={item => item}
-                    style={{ flex: 1, height: 'auto' }}
-                    contentContainerStyle={{ flexGrow: 1 }}
-                />
-            }
+            {/* <View style={{ flex: 1 }}>
+                {image &&
+                    <FlatList
+                        data={image}
+                        numColumns={2}
+                        renderItem={({ item }) => {
+                            return (
+                                <Image
+                                    source={{ uri: item }}
+                                    style={styles.imageStyle}
+                                />
+                            )
+                        }}
+                        keyExtractor={item => item}
+                        contentContainerStyle={{ flexGrow: 1 }}
+                    />
+                }
+            </View> */}
 
             <TouchableOpacity
                 style={styles.addPhoto}
@@ -75,6 +83,9 @@ const styles = StyleSheet.create({
         fontSize: 30,
         color: 'black',
         marginRight: '30%'
+    },
+    imageContainer: {
+        flexGrow: 1,
     },
     textStyle: {
         fontSize: 23,

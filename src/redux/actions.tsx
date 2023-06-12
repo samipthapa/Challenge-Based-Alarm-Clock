@@ -11,3 +11,10 @@ export const setSound = (sound: string) => {
         payload: sound
     }
 }
+
+export const setImagePath = (imagePath: string) => {
+    return {
+        type: 'IMAGEPATH',
+        payload: imagePath
+    }
+}
