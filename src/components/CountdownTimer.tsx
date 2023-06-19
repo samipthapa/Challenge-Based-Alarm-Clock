@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import ProgressBar from 'react-native-progress/Bar';
 
 function CountdownTimer({ inputValue, onCountdownFinish }): JSX.Element {

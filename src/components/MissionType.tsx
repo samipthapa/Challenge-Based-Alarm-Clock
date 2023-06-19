@@ -5,7 +5,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import store from '../redux/store';
+import { store } from '../redux/store';
 
 function MissionType({ title, navigation }): JSX.Element {
     let IconComponent = null;
@@ -32,7 +32,10 @@ function MissionType({ title, navigation }): JSX.Element {
     return (
         <TouchableOpacity
             style={styles.container}
-            onPress={() => navigation.navigate('Alarm', { title })}
+            onPress={() => {
+                if (title == "Photo") navigation.navigate('Photos');
+                else navigation.navigate('Alarm', { title });
+            }}
         >
             <IconComponent name={iconName} style={styles.iconStyle} />
 

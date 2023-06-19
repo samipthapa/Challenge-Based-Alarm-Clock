@@ -17,7 +17,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import store from '../redux/store';
+import { store } from '../redux/store';
 import { useRoute } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 import { setAlarmID } from '../redux/actions';
@@ -29,6 +29,7 @@ function SetAlarmScreen({ navigation }: { navigation: any }): JSX.Element {
     const dispatch = useDispatch();
     const route = useRoute();
     const mission = route.params?.title;
+    const photo = route.params?.photo;
     const [sound, setSound] = useState('casino.mp3');
 
     useEffect(() => {
@@ -95,7 +96,7 @@ function SetAlarmScreen({ navigation }: { navigation: any }): JSX.Element {
             console.log(title);
 
             db.transaction(txn => {
-                txn.executeSql("UPDATE table_alarm set date=?, mission=?, sound=? where alarmID=?", [dateStr, title, sound, alarmID], (tx, res) => {
+                txn.executeSql("UPDATE table_alarm set date=?, mission=?, sound=?, photo=? where alarmID=?", [dateStr, title, sound, photo, alarmID], (tx, res) => {
                     navigation.goBack();
                 })
             })
@@ -107,8 +108,8 @@ function SetAlarmScreen({ navigation }: { navigation: any }): JSX.Element {
 
             db.transaction(txn => {
                 txn.executeSql(
-                    'INSERT INTO table_alarm(isEnabled, date, mission, sound) VALUES (?, ?, ?, ?)',
-                    [true, dateStr, title, sound],
+                    'INSERT INTO table_alarm(isEnabled, date, mission, sound, photo) VALUES (?, ?, ?, ?, ?)',
+                    [true, dateStr, title, sound, photo],
                     (tx, res) => {
                         if (res.rowsAffected == 1) {
                             navigation.goBack();

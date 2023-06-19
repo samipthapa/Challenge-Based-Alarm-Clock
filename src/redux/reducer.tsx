@@ -39,7 +39,7 @@ const initialState = {
     },
     "alarmID": 0,
     "sound": "",
-    "imagePath": []
+    "imagePath": [],
 };
 
 const persistConfig = {

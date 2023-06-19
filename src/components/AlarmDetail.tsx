@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Switch, TouchableWithoutFeedback } from 'react-
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Feather from 'react-native-vector-icons/Feather';
 import { openDatabase } from 'react-native-sqlite-storage';
-import store from '../redux/store';
+import { store } from '../redux/store';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';

@@ -37,6 +37,8 @@ function HomeScreen({ navigation }: { navigation: any }): JSX.Element {
 
     }, [isFocused]);
 
+    console.log(alarmList);
+
     useEffect(() => {
         const interval = setInterval(() => {
             const currentTime = new Date().toLocaleTimeString();

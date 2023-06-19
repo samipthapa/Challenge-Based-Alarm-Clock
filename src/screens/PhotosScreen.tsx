@@ -24,13 +24,13 @@ const formatData = (data, numColumns) => {
 
 const numColumns = 3;
 
-function PhotosScreen(): JSX.Element {
+function PhotosScreen({ navigation }): JSX.Element {
     const dispatch = useDispatch();
 
     const paths = useSelector(state => state.imagePath);
 
     const [image, setImage] = useState(paths);
-    const [selectedImage, setSelectedImage] = useState('');
+    const [selectedImage, setSelectedImage] = useState(paths[0] ? paths[0] : null);
 
     const takePhotoFromCamera = () => {
         ImagePicker.openCamera({
@@ -73,7 +73,7 @@ function PhotosScreen(): JSX.Element {
                                     source={{ uri: item }}
                                     style={styles.imageStyle}
                                 />
-                                {item == selectedImage && <Ionicons name="checkmark-circle" size={24} color="rgb(17,191,228)" style={styles.checkIcon} />}
+                                {item == selectedImage && <Ionicons name="checkmark-circle" size={24} color="white" style={styles.checkIcon} />}
 
                                 <FontAwesome5Icon
                                     onPress={() => {
@@ -101,6 +101,7 @@ function PhotosScreen(): JSX.Element {
 
             <TouchableOpacity
                 style={[styles.saveStyle, image.length == 0 ? { marginTop: '150%' } : { marginTop: '5%' }]}
+                onPress={() => navigation.navigate('Alarm', { photo: selectedImage, title: "Photo" })}
             >
                 <Text style={styles.buttonText}>Save</Text>
             </TouchableOpacity>
