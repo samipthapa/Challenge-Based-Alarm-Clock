@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image, FlatList } from "react-native";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import { setImagePath } from "../redux/actions";
 
 const formatData = (data, numColumns) => {
+    data = data.filter(item => !item.empty);
     const numberOfFullRows = Math.floor(data.length / numColumns);
 
     let numberOfElementsLastRow = data.length - (numberOfFullRows * numColumns);
@@ -37,7 +38,10 @@ const renderItem = ({ item, index }) => {
 
 function PhotosScreen(): JSX.Element {
     const dispatch = useDispatch();
+
     const paths = useSelector(state => state.imagePath);
+
+    const [image, setImage] = useState(paths);
 
     const takePhotoFromCamera = () => {
         ImagePicker.openCamera({
@@ -45,11 +49,15 @@ function PhotosScreen(): JSX.Element {
             height: 400,
             cropping: false,
         }).then(image => {
+            setImage(prev => ([
+                ...prev,
+                image.path
+            ]));
             dispatch(setImagePath(image.path));
         });
     };
 
-    const formattedData = formatData(paths, numColumns);
+    const formattedData = formatData(image, numColumns);
 
     return (
         <View style={styles.container}>
@@ -58,17 +66,18 @@ function PhotosScreen(): JSX.Element {
             <Text style={styles.textStyle}>Photo</Text>
             <Text style={styles.subheading}>Take photo of the place you set in advance</Text>
 
-            <View style={{ flex: 1 }}>
+            {image.length > 0 &&
                 <FlatList
                     data={formattedData}
                     style={styles.imageContainerStyle}
-                    numColumns={3}
+                    numColumns={numColumns}
                     renderItem={renderItem}
                 />
-            </View>
+            }
+
 
             <TouchableOpacity
-                style={styles.addPhoto}
+                style={[styles.addPhoto, image.length == 0 ? { marginTop: '5%' } : null]}
                 onPress={takePhotoFromCamera}
             >
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -78,7 +87,7 @@ function PhotosScreen(): JSX.Element {
             </TouchableOpacity>
 
             <TouchableOpacity
-                style={styles.saveStyle}
+                style={[styles.saveStyle, image.length == 0 ? { marginTop: '150%' } : { marginTop: '5%' }]}
             >
                 <Text style={styles.buttonText}>Save</Text>
             </TouchableOpacity>
