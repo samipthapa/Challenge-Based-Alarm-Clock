@@ -6,6 +6,8 @@ import ImagePicker from 'react-native-image-crop-picker';
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { setImagePath } from "../redux/actions";
+import { clearImagePath } from "../redux/actions";
+import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 
 const formatData = (data, numColumns) => {
     data = data.filter(item => !item.empty);
@@ -22,26 +24,13 @@ const formatData = (data, numColumns) => {
 
 const numColumns = 3;
 
-const renderItem = ({ item, index }) => {
-    if (item.empty === true) {
-        return <View style={[styles.item, styles.itemInvisible]} />;
-    }
-    return (
-        <View style={styles.item}>
-            <Image
-                source={{ uri: item }}
-                style={styles.imageStyle}
-            />
-        </View>
-    );
-};
-
 function PhotosScreen(): JSX.Element {
     const dispatch = useDispatch();
 
     const paths = useSelector(state => state.imagePath);
 
     const [image, setImage] = useState(paths);
+    const [selectedImage, setSelectedImage] = useState('');
 
     const takePhotoFromCamera = () => {
         ImagePicker.openCamera({
@@ -71,7 +60,31 @@ function PhotosScreen(): JSX.Element {
                     data={formattedData}
                     style={styles.imageContainerStyle}
                     numColumns={numColumns}
-                    renderItem={renderItem}
+                    renderItem={({ item }) => {
+                        if (item.empty === true) {
+                            return <View style={[styles.item, styles.itemInvisible]} />;
+                        }
+                        return (
+                            <TouchableOpacity
+                                style={styles.item}
+                                onPress={() => setSelectedImage(item)}
+                            >
+                                <Image
+                                    source={{ uri: item }}
+                                    style={styles.imageStyle}
+                                />
+                                {item == selectedImage && <Ionicons name="checkmark-circle" size={24} color="rgb(17,191,228)" style={styles.checkIcon} />}
+
+                                <FontAwesome5Icon
+                                    onPress={() => {
+                                        const updatedImage = image.filter((path) => path !== item);
+                                        setImage(updatedImage);
+                                        dispatch(clearImagePath(item));
+                                    }}
+                                    name="trash" size={20} color="white" style={styles.deleteIcon} />
+                            </TouchableOpacity>
+                        );
+                    }}
                 />
             }
 
@@ -165,6 +178,16 @@ const styles = StyleSheet.create({
     itemInvisible: {
         backgroundColor: 'transparent',
     },
+    checkIcon: {
+        position: 'absolute',
+        top: 5,
+        right: 5,
+    },
+    deleteIcon: {
+        position: 'absolute',
+        top: '75%',
+        right: 8,
+    }
 });
 
 export default PhotosScreen;

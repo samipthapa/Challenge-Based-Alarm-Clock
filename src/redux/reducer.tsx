@@ -68,8 +68,8 @@ const reducer = (state = initialState, action) => {
         case 'CLEAR_STATE':
             return {
                 ...state,
-                "imagePath": []
-            }
+                "imagePath": state.imagePath.filter(path => path !== action.payload)
+            };
         default:
             return state;
     }

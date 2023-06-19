@@ -19,6 +19,7 @@ export const setImagePath = (imagePath: string) => {
     }
 }
 
-export const clearImagePath = () => ({
-    type: 'CLEAR_STATE'
+export const clearImagePath = (imagePath: string) => ({
+    type: 'CLEAR_STATE',
+    payload: imagePath
 });
