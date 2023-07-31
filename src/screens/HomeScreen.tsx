@@ -5,7 +5,6 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import useSQLite from '../hooks/useSQLite';
 import { useIsFocused } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
-
 import { openDatabase } from 'react-native-sqlite-storage';
 
 let db = openDatabase({ name: 'AlarmDatabase.db' });
@@ -37,18 +36,17 @@ function HomeScreen({ navigation }: { navigation: any }): JSX.Element {
 
     }, [isFocused]);
 
-    console.log(alarmList);
-
     useEffect(() => {
         const interval = setInterval(() => {
             const currentTime = new Date().toLocaleTimeString();
+            console.log(currentTime);
 
             alarmList.forEach(alarm => {
                 const alarmTimeObject = new Date(alarm.date).toLocaleTimeString();
 
                 if (alarmTimeObject === currentTime && alarm.isEnabled) {
                     dispatch({ type: 'SOUND', payload: alarm.sound });
-                    navigation.navigate('Preview', { mission: alarm.mission });
+                    navigation.navigate('Preview', { mission: alarm.mission, photo: alarm.photo });
                     console.log('Alarm triggered');
                 }
             });
@@ -61,7 +59,7 @@ function HomeScreen({ navigation }: { navigation: any }): JSX.Element {
         <View style={styles.container}>
             <View>
                 <Text style={styles.nextAlarm}>Next alarm</Text>
-                <Text style={styles.countdown}>{remainingTime}</Text>
+                <Text style={styles.countdown}></Text>
                 <FlatList
                     data={alarmList}
                     renderItem={({ item, index }) => {
@@ -70,6 +68,7 @@ function HomeScreen({ navigation }: { navigation: any }): JSX.Element {
                                 activeOpacity={0.6}
                                 onPress={() => navigation.navigate('Alarm', {
                                     alarmID: item.alarmID,
+                                    photo: item.photo,
                                 })}
                             >
                                 <AlarmDetail

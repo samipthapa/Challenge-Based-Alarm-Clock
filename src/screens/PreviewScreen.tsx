@@ -6,10 +6,9 @@ import { useSelector } from 'react-redux';
 
 function PreviewScreen({ navigation }): JSX.Element {
     const mission = useRoute().params?.mission;
-    const sound = useSelector(state => state.sound);
-    console.log(sound);
+    const photo = useRoute().params?.photo;
 
-    console.log('Preview Screen Rendered');
+    const sound = useSelector(state => state.sound);
 
     var Sound = require('react-native-sound');
     Sound.setCategory('Playback');
@@ -51,6 +50,9 @@ function PreviewScreen({ navigation }): JSX.Element {
                                 break;
                             case 'Typing':
                                 navigation.navigate('TypingMission');
+                                break;
+                            case 'Photo':
+                                navigation.navigate('PhotoMission', { photo: photo });
                                 break;
                             default:
                                 navigation.navigate('Home');

@@ -6,6 +6,8 @@ import MathMissionScreen from './src/screens/MathMissionScreen';
 import TypingScreen from './src/screens/TypingScreen';
 import SoundScreen from './src/screens/SoundScreen';
 import PhotosScreen from './src/screens/PhotosScreen';
+import PhotoMissionScreen from './src/screens/PhotoMissionScreen';
+import NoMatchScreen from './src/screens/NoMatchScreen';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { Provider } from 'react-redux';
@@ -32,6 +34,8 @@ const StackNavigator = () => {
       <Stack.Screen name="TypingMission" component={TypingScreen} />
       <Stack.Screen name="Sound" component={SoundScreen} />
       <Stack.Screen name="Photos" component={PhotosScreen} />
+      <Stack.Screen name="PhotoMission" component={PhotoMissionScreen} />
+      <Stack.Screen name="NotMatch" component={NoMatchScreen} />
     </Stack.Navigator>
   )
 }
